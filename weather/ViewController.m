@@ -32,6 +32,7 @@
     
     //update data everytime app becames active
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(updateData) name:@"dealNotification" object: nil];
     
     day1.selected = TRUE;
     
@@ -63,9 +64,16 @@
     // Kick off your CLLocationManager
     //call the function to get the data and current date
     int timeNow = [self getUnixTime:[NSDate date]];
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     int lastUpdate = [[defaults objectForKey:@"lastUpdateTime"]intValue];
     NSData *lastData = [defaults objectForKey:@"lastData"];
+    
+    
+    NSDate *lastUpdateDate = [NSDate dateWithTimeIntervalSince1970:lastUpdate];
+    //display days in buttons
+    [self getDate:lastUpdateDate];
+    
     NSString *lastAddress = [defaults objectForKey:@"lastAddress"];
     
     if (timeNow > lastUpdate+36000 || lastData == nil) {
@@ -79,8 +87,6 @@
         }
         self.location.text = lastAddress;
     }
-    
-    [self getDate];
     
 }
 
@@ -222,8 +228,8 @@
 
 }
 
--(void)displayData:(NSUInteger *)index :(NSString *)type{
-    
+- (void)displayData:(NSUInteger *)index :(NSString *)type{
+    //set values for hourly or daily forecast
     if ([type isEqualToString:@"hourly"]) {
         self.icon = [[daily objectAtIndex:*index] valueForKey:@"icon"];
         tempText= [[daily objectAtIndex:*index] valueForKey:@"temperature"];
@@ -240,10 +246,6 @@
         humidityText = [[week objectAtIndex:*index] valueForKey:@"humidity"];
     }
     
-    //convert F to C°
-    NSInteger far = [tempText intValue];
-    NSInteger cel = (far -32)/1.8;
-    
     //convert to percents
     
     NSInteger percipPercents = [humidityText floatValue]*100;
@@ -254,7 +256,16 @@
     float windMeters = [windText floatValue]*0.44704;
     
     //display current values
-    self.temperature.text = [NSString stringWithFormat:@"%i°", cel];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *isCelsiusTrue = [defaults objectForKey:@"celsius"];
+    if ([isCelsiusTrue isEqualToString:@"true"]) {
+        //convert F to C°
+        NSInteger far = [tempText intValue];
+        NSInteger cel = (far -32)/1.8;
+        self.temperature.text = [NSString stringWithFormat:@"%i°", cel];
+    } else {
+        self.temperature.text = [NSString stringWithFormat:@"%i°", [tempText integerValue]];
+    }
     self.sum.text = [NSString stringWithFormat:@"%@", sumText];
     self.clouds.text = [NSString stringWithFormat:@"%i %%", cloudPercents];
     self.wind.text = [NSString stringWithFormat:@"%.01f m/s", windMeters];
@@ -276,9 +287,7 @@
     
 }
 
-- (void)getDate{
-    // get the current date
-    NSDate *date = [NSDate date];
+- (void)getDate:(NSDate *)date{
     
     [self setSliderInit];
     

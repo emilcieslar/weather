@@ -317,27 +317,96 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Ame-cY-mTH">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="416" id="qxD-HX-HAp"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="sTh-29-ypC" id="fab-DA-XnE"/>
                                     <outlet property="delegate" destination="sTh-29-ypC" id="uIm-bh-N2z"/>
                                 </connections>
                             </tableView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MMn-9g-sus">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="88" id="rMA-Qy-xcz"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="°C"/>
+                                    <segment title="°F"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentedControlIndexChanged:" destination="sTh-29-ypC" eventType="valueChanged" id="KZC-NA-4u1"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Ame-cY-mTH" firstAttribute="bottom" secondItem="Zie-vr-D4L" secondAttribute="bottom" type="default" id="4O2-Ob-j6m"/>
+                            <constraint firstItem="MMn-9g-sus" firstAttribute="leading" secondItem="Zie-vr-D4L" secondAttribute="leading" type="default" id="0th-Oo-SHi"/>
+                            <constraint firstItem="MMn-9g-sus" firstAttribute="bottom" secondItem="Zie-vr-D4L" secondAttribute="bottom" type="default" id="QSd-To-fYm"/>
                             <constraint firstItem="Ame-cY-mTH" firstAttribute="top" secondItem="Zie-vr-D4L" secondAttribute="top" type="default" id="T33-8p-yos"/>
                             <constraint firstItem="Ame-cY-mTH" firstAttribute="leading" secondItem="Zie-vr-D4L" secondAttribute="leading" type="default" id="Tkl-v4-Enf"/>
                             <constraint firstItem="Ame-cY-mTH" firstAttribute="trailing" secondItem="Zie-vr-D4L" secondAttribute="trailing" type="default" id="nqf-SJ-xPs"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="unitSwitch" destination="MMn-9g-sus" id="Ibe-eJ-edB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GGO-7E-PfC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="848" y="123"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="ECSlidingViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ECSlidingViewController.h"/>
+        </class>
+        <class className="InitialViewController" superclassName="ECSlidingViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InitialViewController.h"/>
+        </class>
+        <class className="MenuViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MenuViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="segmentedControlIndexChanged:"/>
+                <relationship kind="outlet" name="unitSwitch" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="NSMutableArray" superclassName="NSArray">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSMutableArray.h"/>
+        </class>
+        <class className="ViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="dayPressed:"/>
+                <relationship kind="action" name="refresh:"/>
+                <relationship kind="action" name="slideMenu:"/>
+                <relationship kind="action" name="sliderValueChanged:"/>
+                <relationship kind="outlet" name="clouds" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="daily" candidateClass="NSMutableArray"/>
+                <relationship kind="outlet" name="day1" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="day2" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="day3" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="day4" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="day5" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="day6" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="displayTime" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="icona" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="location" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="rain" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="refresData" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="showMenu" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="slider" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="sum" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="temperature" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="week" candidateClass="NSMutableArray"/>
+                <relationship kind="outlet" name="weekdays" candidateClass="NSArray"/>
+                <relationship kind="outlet" name="wind" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -12,6 +12,7 @@
 #import "ECSlidingViewController.h"
 #import "MenuViewController.h"
 
+
 @interface ViewController : UIViewController
 
 //icon image
@@ -57,6 +58,10 @@
 //buttons
 @property (strong, nonatomic) IBOutlet UIButton *showMenu;
 @property (strong, nonatomic) IBOutlet UIButton *refresData;
+
+//bolean
+
+@property (nonatomic) BOOL *isCelsius;
 
 //day buttons
 

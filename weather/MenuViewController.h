@@ -12,4 +12,8 @@
 
 @interface MenuViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UISegmentedControl *unitSwitch;
+
+- (IBAction)segmentedControlIndexChanged:(id)sender;
+
 @end
