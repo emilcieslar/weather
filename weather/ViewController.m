@@ -347,28 +347,32 @@
     NSDateFormatter *dayFormat = [[NSDateFormatter alloc]init];
     [dayFormat setDateFormat:@"c"];
     
-    // convert it to a string
-    NSString *dayString = [dayFormat stringFromDate:date];
-    dayNum = [dayString intValue];
+    [dayFormat setDateFormat:@"EEE"];
+    NSString *dayOfWeek = [dayFormat stringFromDate:date];
     
     //find the days of the week
     NSDateFormatter * df = [[NSDateFormatter alloc] init];
-    [df setLocale: [NSLocale currentLocale]];
     weekdays = [df shortStandaloneWeekdaySymbols];
     
+    //check current day number
+    int count = 0;
+    while (![dayOfWeek isEqualToString:[weekdays objectAtIndex:count]]) {
+        dayNum = count;
+        count++;
+    }
+    
+    //set day buttons titles
     NSMutableArray *buttonArray =  [[NSMutableArray alloc] initWithObjects:day1,day2,day3,day4,day5,day6,nil];
     
     for (int i = 0; i <= [buttonArray count]-1; i++) {
-        int dayNumNew = dayNum-1+i;
+        int dayNumNew = dayNum+1+i;
         
         if (dayNumNew > 6 ) {
             dayNumNew = dayNumNew-7;
         };
-        
+                
         [[buttonArray objectAtIndex:i] setTitle:[weekdays objectAtIndex:dayNumNew] forState:UIControlStateNormal];
     }
-
-    
 }
 
 - (IBAction)sliderValueChanged:(UISlider *)sender {
