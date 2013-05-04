@@ -13,8 +13,8 @@
 @interface MenuViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *unitSwitch;
-
-- (IBAction)segmentedControlIndexChanged:(id)sender;
+@property (strong, nonatomic) IBOutlet UIButton *addLocationButton;
 @property (strong, nonatomic) IBOutlet UITableView *locationsTable;
-
+- (IBAction)segmentedControlIndexChanged:(id)sender;
+- (IBAction)addLocation:(id)sender;
 @end

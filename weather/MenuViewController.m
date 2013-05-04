@@ -59,4 +59,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"dealNotification" object: nil];
 }
 
+- (IBAction)addLocation:(id)sender {
+}
 @end
