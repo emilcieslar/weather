@@ -544,14 +544,14 @@ bool firstTouch = YES;
     float xLeg = (center.x - touchPoint.x);
     float yLeg = (center.y - touchPoint.y);
     float angle = -atan(xLeg / yLeg);
-    NSLog(@"angleMoved: %f",angle);
     
     // angle is long: 3.14; hours for half a day: 12
     self.halfDay = 3.14/12;
         
     if(touchPY < 373 && touchPY > 200) {
         
-        [self.slider setValue:-angle+[self.slider value]];
+        NSLog(@"angleMoved: %f",angle);
+        [self.slider setValue:-angle/12+[self.slider value]];
         [self sliderValueChanged:self.slider];
         
         // Rotate the UIView with image of sun or moon
@@ -572,6 +572,9 @@ bool firstTouch = YES;
         }
         
     } else if(touchPY > 373) {
+        
+        [self.slider setValue:angle/12+[self.slider value]];
+        [self sliderValueChanged:self.slider];
         
         // Rotate the UIView with image of sun or moon
         self.baseView.transform = CGAffineTransformMakeRotation(angle);
