@@ -29,6 +29,8 @@
 		3A8D1820170E245A0042C50D /* sun.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8D1817170E245A0042C50D /* sun.png */; };
 		3A8EF7B717357C41009B6711 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7B617357C41009B6711 /* icon.png */; };
 		3A8EF7B91735800B009B6711 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7B81735800B009B6711 /* icon@2x.png */; };
+		3A8EF7BC1735860A009B6711 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7BA1735860A009B6711 /* default.png */; };
+		3A8EF7BD1735860A009B6711 /* default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7BB1735860A009B6711 /* default@2x.png */; };
 		3AB8B7DA173061E6008546DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB8B7D9173061E6008546DB /* QuartzCore.framework */; };
 		3AB8B7E21730F3FA008546DB /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB8B7E11730F3FA008546DB /* InitialViewController.m */; };
 		3AB8B7E31730F6F1008546DB /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB8B7DC1730629A008546DB /* ECSlidingViewController.m */; };
@@ -81,6 +83,8 @@
 		3A8D1817170E245A0042C50D /* sun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sun.png; sourceTree = "<group>"; };
 		3A8EF7B617357C41009B6711 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
 		3A8EF7B81735800B009B6711 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../../MyWeather/icon@2x.png"; sourceTree = "<group>"; };
+		3A8EF7BA1735860A009B6711 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
+		3A8EF7BB1735860A009B6711 /* default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default@2x.png"; sourceTree = "<group>"; };
 		3AB8B7D9173061E6008546DB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3AB8B7DB1730629A008546DB /* ECSlidingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
 		3AB8B7DC1730629A008546DB /* ECSlidingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
@@ -193,6 +197,8 @@
 		3A8D17D9170DFCB70042C50D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3A8EF7BA1735860A009B6711 /* default.png */,
+				3A8EF7BB1735860A009B6711 /* default@2x.png */,
 				3A8EF7B81735800B009B6711 /* icon@2x.png */,
 				3A8EF7B617357C41009B6711 /* icon.png */,
 				CE517D9917342F3F0055C7C7 /* activeDay@2x.png */,
@@ -320,6 +326,8 @@
 				CE96B6B81735602D0094EA0D /* addLocation@2x.png in Resources */,
 				3A8EF7B717357C41009B6711 /* icon.png in Resources */,
 				3A8EF7B91735800B009B6711 /* icon@2x.png in Resources */,
+				3A8EF7BC1735860A009B6711 /* default.png in Resources */,
+				3A8EF7BD1735860A009B6711 /* default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
