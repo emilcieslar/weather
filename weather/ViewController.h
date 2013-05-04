@@ -15,6 +15,10 @@
 
 @interface ViewController : UIViewController
 
+// Sun slider
+@property (strong, nonatomic) UIView *baseView;
+@property (strong, nonatomic) UIImageView *baseImg;
+
 //icon image
 @property (strong, nonatomic) IBOutlet UIImageView *icona;
 

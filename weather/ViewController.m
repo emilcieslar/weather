@@ -22,6 +22,45 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    /* ######### SETTING UP EARTH SLIDER ######### */
+    
+    // Add earth
+    UIImageView *earth = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 225, 132)];
+    [earth setCenter:CGPointMake(160, 329)];
+    [earth setImage: [UIImage imageNamed:@"earth-around1.png"]];
+    [self.view addSubview:earth];
+    
+    // Init baseView (UIView)
+    self.baseView = [[UIView alloc] init];
+    [self.baseView setFrame:CGRectMake(0, 0, 30, 258)];
+    [self.baseView setCenter: CGPointMake(160,372)];
+    [self.view addSubview:self.baseView];
+    
+    // Add sun to baseView
+    self.baseImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 129)];
+    [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"sun1.png"]]];
+    [self.baseView addSubview:self.baseImg];
+    
+    // Add label to baseView
+    UILabel *time = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
+    time.center = CGPointMake(20, -12);
+    time.backgroundColor = [UIColor colorWithWhite:1 alpha:0];
+    time.textColor = [UIColor colorWithWhite:1 alpha:1];
+    time.text = @"10:00";
+    [self.baseView addSubview:time];
+    
+    // Add actual earth
+    UIImageView *earthAlone = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 225, 132)];
+    [earthAlone setCenter:CGPointMake(160, 329)];
+    [earthAlone setImage: [UIImage imageNamed:@"earth-without1.png"]];
+    [self.view addSubview:earthAlone];
+    
+    float targetRotation = -90.0;
+    self.baseView.transform = CGAffineTransformMakeRotation(targetRotation / 180.0 * M_PI);
+    
+    /* ######### END SETTING UP EARTH SLIDER ########## */
+    
 	// setting up day buttons width
     int rectX = 0;
     CGRect buttonFrame1 = CGRectMake(rectX,self.view.frame.size.height - 50,53,50);
@@ -428,6 +467,98 @@
     
     self.slider.value = ((midnight + (12+x*24)*3600)-updated)/3600;
     [self sliderValueChanged:slider];
+}
+
+
+
+/* ########################## EARTH SLIDER STUFF ############################ */
+
+// Set variable isUp and isDown
+NSString *up = @"sun";
+bool hasSwitched = NO;
+
+// Touches ended method
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+    if([up isEqual:@"sun"]) {
+        hasSwitched = NO;
+    } else {
+        hasSwitched = YES;
+    }
+}
+
+// Touches began method
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    CGPoint touchPoint = [touch locationInView:self.view];
+    
+    if(touchPoint.y < 373 && touchPoint.y > 200) {
+        if([up isEqual:@"sun"]) {
+            hasSwitched = NO;
+        } else {
+            hasSwitched = YES;
+        }
+    } else if(touchPoint.y > 373) {
+        if([up isEqual:@"sun"]) {
+            hasSwitched = YES;
+        } else {
+            hasSwitched = NO;
+        }
+    }
+}
+
+// Touches moved method
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    CGPoint touchPoint = [touch locationInView:self.view];
+    
+    float touchPY = touchPoint.y;
+    
+    CGPoint center = CGPointMake(160.0f, 373.0f);
+    float xLeg = (center.x - touchPoint.x);
+    float yLeg = (center.y - touchPoint.y);
+    float angle = -atan(xLeg / yLeg);
+    
+    // Rotate the UIView with image of sun or moon
+    self.baseView.transform = CGAffineTransformMakeRotation(angle);
+    
+    if(touchPY < 373 && touchPY > 200) {
+        
+        NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
+        
+        if(hasSwitched) {
+            up = @"moon";
+        } else {
+            up = @"sun";
+        }
+        
+        if([up isEqual: @"sun"]) {
+            [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"sun1.png"]]];
+        } else {
+            [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"moon.png"]]];
+        }
+        
+    } else if(touchPY > 373) {
+        
+        NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
+        
+        if(hasSwitched) {
+            up = @"sun";
+        } else {
+            up = @"moon";
+        }
+        
+        if([up isEqual:@"moon"]) {
+            [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"moon.png"]]];
+        } else {
+            [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"sun1.png"]]];
+        }
+
+    }
+    
 }
 
 @end
