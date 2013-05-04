@@ -326,18 +326,33 @@
     self.wind.text = [NSString stringWithFormat:@"%.01f m/s", windMeters];
     self.rain.text = [NSString stringWithFormat:@"%i %%", percipPercents];
     
-    
     //display the right icon
-    if ([self.icon isEqual: @"cloudy"] || [self.icon isEqual: @"fog"] || [self.icon isEqual: @"wind"]) {
-        [self.icona setImage:[UIImage imageNamed:@"cloud.png"]];
-    } else if ([self.icon isEqual: @"clear-day"]  || [self.icon isEqual: @"clear-night"]) {
-        [self.icona setImage:[UIImage imageNamed:@"sun.png"]];
+    if ([self.icon isEqual: @"cloudy"]) {
+        [self.icona setImage:[UIImage imageNamed:@"cloudy.png"]];
+    } else if([self.icon isEqual: @"fog"]){
+        [self.icona setImage:[UIImage imageNamed:@"fog.png"]];
+    } else if([self.icon isEqual: @"wind"]){
+        [self.icona setImage:[UIImage imageNamed:@"wind.png"]];
+    } else if ([self.icon isEqual: @"clear-day"]) {
+        [self.icona setImage:[UIImage imageNamed:@"clear.png"]];
+    } else if([self.icon isEqual: @"clear-night"]){
+        [self.icona setImage:[UIImage imageNamed:@"clear-night.png"]];
     } else if ([self.icon isEqual: @"rain"]) {
         [self.icona setImage:[UIImage imageNamed:@"rain.png"]];
-    } else if ([self.icon isEqual: @"snow"]  || [self.icon isEqual: @"sleet"]) {
+    } else if ([self.icon isEqual: @"snow"]) {
         [self.icona setImage:[UIImage imageNamed:@"snow.png"]];
-    } else if ([self.icon isEqual: @"partly-cloudy-day"]  || [self.icon isEqual: @"partly-cloudy-night"]) {
-        [self.icona setImage:[UIImage imageNamed:@"cloud-sun.png"]];
+    } else if([self.icon isEqual: @"sleet"]){
+        [self.icona setImage:[UIImage imageNamed:@"sleet.png"]];
+    } else if ([self.icon isEqual: @"partly-cloudy-day"]) {
+        [self.icona setImage:[UIImage imageNamed:@"partly-cloudy-day.png"]];
+    } else if ([self.icon isEqual: @"partly-cloudy-night"]){
+        [self.icona setImage:[UIImage imageNamed:@"partly-cloudy-night.png"]];
+    } else if ([self.icon isEqual: @"tornado"]){
+        [self.icona setImage:[UIImage imageNamed:@"tornado.png"]];
+    } else if ([self.icon isEqual: @"hail"]){
+        [self.icona setImage:[UIImage imageNamed:@"hail.png"]];
+    } else if ([self.icon isEqual: @"thunderstorm"]){
+        [self.icona setImage:[UIImage imageNamed:@"storm.png"]];
     }
     
 }
