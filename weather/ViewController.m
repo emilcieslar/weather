@@ -389,6 +389,7 @@
     NSString *theDate = [format stringFromDate:displayedTimeReal];
     
     self.timeEarth.text = theDate;
+    self.displayTime.text = theDate;
     
     int currentInt = currentVal;
     
@@ -541,9 +542,13 @@ bool firstTouch = YES;
     float angle = -atan(xLeg / yLeg);
     NSLog(@"angleMoved: %f",angle);
     
-    //(angle is long: 3.14)
+    // angle is long: 3.14; hours for half a day: 12
+    self.halfDay = 3.14/12;
         
     if(touchPY < 373 && touchPY > 200) {
+        
+        [self.slider setValue:-angle+[self.slider value]];
+        [self sliderValueChanged:self.slider];
         
         // Rotate the UIView with image of sun or moon
         self.baseView.transform = CGAffineTransformMakeRotation(angle);
