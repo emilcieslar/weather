@@ -380,6 +380,7 @@
 
 - (IBAction)sliderValueChanged:(UISlider *)sender {
     
+    [self.slider setValue:self.dayPart];
     float currentVal = [self.slider value];
     int midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
     int updated = [[defaults objectForKey:@"lastUpdateTime"]intValue];
@@ -546,13 +547,59 @@ bool firstTouch = YES;
     float angle = -atan(xLeg / yLeg);
     
     // angle is long: 3.14; hours for half a day: 12
-    self.halfDay = 3.14/12;
         
     if(touchPY < 373 && touchPY > 200) {
         
-        NSLog(@"angleMoved: %f",angle);
-        [self.slider setValue:-angle/12+[self.slider value]];
-        [self sliderValueChanged:self.slider];
+        NSLog(@"angleMoved: %f, required: %f",fabsf(angle),1.57/6*5);
+        
+        // If we're angle is less than 0
+        if(angle < 0) {
+            if(fabsf(angle) >= 1.57) {
+                self.dayPart = 0;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57 && fabsf(angle) >= 1.57/6*5) {
+                self.dayPart = 1;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*5 && fabsf(angle) >= 1.57/6*4) {
+                self.dayPart = 2;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*4 && fabsf(angle) >= 1.57/6*3) {
+                self.dayPart = 3;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*3 && fabsf(angle) >= 1.57/6*2) {
+                self.dayPart = 4;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*2 && fabsf(angle) >= 1.57/6*1) {
+                self.dayPart = 5;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6) {
+                self.dayPart = 6;
+                [self sliderValueChanged:self.slider];
+            }
+        }
+        
+        // If we're angle is more than 0
+        if(angle > 0) {
+            if(fabsf(angle) >= 1.57) {
+                self.dayPart = 12;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57 && fabsf(angle) >= 1.57/6*5) {
+                self.dayPart = 11;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*5 && fabsf(angle) >= 1.57/6*4) {
+                self.dayPart = 10;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*4 && fabsf(angle) >= 1.57/6*3) {
+                self.dayPart = 9;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*3 && fabsf(angle) >= 1.57/6*2) {
+                self.dayPart = 8;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*2 && fabsf(angle) >= 1.57/6*1) {
+                self.dayPart = 7;
+                [self sliderValueChanged:self.slider];
+            }
+        }
         
         // Rotate the UIView with image of sun or moon
         self.baseView.transform = CGAffineTransformMakeRotation(angle);
@@ -573,8 +620,54 @@ bool firstTouch = YES;
         
     } else if(touchPY > 373) {
         
-        [self.slider setValue:angle/12+[self.slider value]];
-        [self sliderValueChanged:self.slider];
+        // If we're angle is less than 0
+        if(angle < 0) {
+            if(fabsf(angle) >= 1.57) {
+                self.dayPart = 12;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57 && fabsf(angle) >= 1.57/6*5) {
+                self.dayPart = 13;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*5 && fabsf(angle) >= 1.57/6*4) {
+                self.dayPart = 14;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*4 && fabsf(angle) >= 1.57/6*3) {
+                self.dayPart = 15;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*3 && fabsf(angle) >= 1.57/6*2) {
+                self.dayPart = 16;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*2 && fabsf(angle) >= 1.57/6*1) {
+                self.dayPart = 17;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6) {
+                self.dayPart = 18;
+                [self sliderValueChanged:self.slider];
+            }
+        }
+        
+        // If we're angle is more than 0
+        if(angle > 0) {
+            if(fabsf(angle) >= 1.57) {
+                self.dayPart = 24;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57 && fabsf(angle) >= 1.57/6*5) {
+                self.dayPart = 23;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*5 && fabsf(angle) >= 1.57/6*4) {
+                self.dayPart = 22;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*4 && fabsf(angle) >= 1.57/6*3) {
+                self.dayPart = 21;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*3 && fabsf(angle) >= 1.57/6*2) {
+                self.dayPart = 20;
+                [self sliderValueChanged:self.slider];
+            } else if(fabsf(angle) < 1.57/6*2 && fabsf(angle) >= 1.57/6*1) {
+                self.dayPart = 19;
+                [self sliderValueChanged:self.slider];
+            }
+        }
         
         // Rotate the UIView with image of sun or moon
         self.baseView.transform = CGAffineTransformMakeRotation(angle);

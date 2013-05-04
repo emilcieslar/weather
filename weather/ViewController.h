@@ -19,7 +19,7 @@
 @property (strong, nonatomic) UIView *baseView;
 @property (strong, nonatomic) UIImageView *baseImg;
 @property (strong, nonatomic) UILabel *timeEarth;
-@property float halfDay;
+@property float dayPart;
 
 // custom view for opening menu (only at top half of the screen)
 @property (strong, nonatomic) IBOutlet UIView *menuOpenView;
