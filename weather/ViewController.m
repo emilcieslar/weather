@@ -373,7 +373,7 @@
         if (dayNumNew > 6 ) {
             dayNumNew = dayNumNew-7;
         };
-                
+        
         [[buttonArray objectAtIndex:i] setTitle:[weekdays objectAtIndex:dayNumNew] forState:UIControlStateNormal];
     }
 }
@@ -595,3 +595,5 @@ bool firstTouch = YES;
 }
 
 @end
+
+
