@@ -10,11 +10,14 @@
 #import "ViewController.h"
 #import "ECSlidingViewController.h"
 
-@interface MenuViewController : UIViewController
+@interface MenuViewController : UIViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *unitSwitch;
-@property (strong, nonatomic) IBOutlet UIButton *addLocationButton;
 @property (strong, nonatomic) IBOutlet UITableView *locationsTable;
 - (IBAction)segmentedControlIndexChanged:(id)sender;
 - (IBAction)addLocation:(id)sender;
+
+// addLocation
+@property (strong, nonatomic) IBOutlet UITextField *addLocation;
+
 @end
