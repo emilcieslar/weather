@@ -269,23 +269,12 @@
                                     <outlet property="delegate" destination="sTh-29-ypC" id="uIm-bh-N2z"/>
                                 </connections>
                             </tableView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="MMn-9g-sus">
-                                <rect key="frame" x="14" y="417" width="88" height="44"/>
-                                <segments>
-                                    <segment title="°C"/>
-                                    <segment title="°F"/>
-                                </segments>
-                                <connections>
-                                    <action selector="segmentedControlIndexChanged:" destination="sTh-29-ypC" eventType="valueChanged" id="KZC-NA-4u1"/>
-                                </connections>
-                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.054901960784313725" green="0.054901960784313725" blue="0.054901960784313725" alpha="1" colorSpace="deviceRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="locationsTable" destination="Ame-cY-mTH" id="QdK-t5-E7P"/>
-                        <outlet property="unitSwitch" destination="MMn-9g-sus" id="Ibe-eJ-edB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GGO-7E-PfC" userLabel="First Responder" sceneMemberID="firstResponder"/>

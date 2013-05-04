@@ -12,12 +12,13 @@
 
 @interface MenuViewController : UIViewController <UITextFieldDelegate>
 
-@property (strong, nonatomic) IBOutlet UISegmentedControl *unitSwitch;
 @property (strong, nonatomic) IBOutlet UITableView *locationsTable;
-- (IBAction)segmentedControlIndexChanged:(id)sender;
-- (IBAction)addLocation:(id)sender;
 
 // addLocation
 @property (strong, nonatomic) IBOutlet UITextField *addLocation;
+// unitSwitchP
+@property (strong, nonatomic) IBOutlet UISegmentedControl *unitSwitchP;
+// unitSwitchP action
+- (IBAction)unitSwitchChanged:(id)sender;
 
 @end

@@ -10,7 +10,6 @@
 
 @implementation MenuViewController
 
-@synthesize unitSwitch;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.addLocation) {
@@ -41,16 +40,36 @@
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 28)];
     self.addLocation.leftView = paddingView;
     self.addLocation.leftViewMode = UITextFieldViewModeAlways;
+    // Add it to view
     [self.view addSubview:self.addLocation];
     
+    // unitSwitchP set up
+    self.unitSwitchP = [[UISegmentedControl alloc] initWithItems:@[@"",@""]];
+    self.unitSwitchP.frame = CGRectMake(185, self.view.frame.size.height-11-26, 69, 26);
+    [self.unitSwitchP setBackgroundImage:[UIImage imageNamed:@"unitSwitchNormal.png"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.unitSwitchP setBackgroundImage:[UIImage imageNamed:@"unitSwitchSelected.png"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    [self.unitSwitchP setDividerImage:[UIImage imageNamed:@"unitSwitchRight.png"]
+                  forLeftSegmentState:UIControlStateNormal
+                    rightSegmentState:UIControlStateSelected
+                           barMetrics:UIBarMetricsDefault];
+    [self.unitSwitchP setDividerImage:[UIImage imageNamed:@"unitSwitchLeft.png"]
+                  forLeftSegmentState:UIControlStateSelected
+                    rightSegmentState:UIControlStateNormal
+                           barMetrics:UIBarMetricsDefault];
+    // Add target for action
+    [self.unitSwitchP addTarget:self action:@selector(unitSwitchChanged:) forControlEvents: UIControlEventValueChanged];
+    // Add it to view
+    [self.view addSubview:self.unitSwitchP];
     
+    
+    // Set defaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isCelsiusTrue = [defaults objectForKey:@"celsius"];
     
     if ([isCelsiusTrue isEqualToString:@"true"]) {
-        unitSwitch.selectedSegmentIndex = 0;
+        self.unitSwitchP.selectedSegmentIndex = 0;
     } else {
-        unitSwitch.selectedSegmentIndex = 1;
+        self.unitSwitchP.selectedSegmentIndex = 1;
     }
     
 }
@@ -60,12 +79,13 @@
     return 0;
 }
 
-- (IBAction)segmentedControlIndexChanged:(id)sender{
-    
+// unitSwitch changed action
+- (IBAction)unitSwitchChanged:(id)sender
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isCelsiusTrue = [defaults objectForKey:@"celsius"];
     
-    switch (self.unitSwitch.selectedSegmentIndex) {
+    switch (self.unitSwitchP.selectedSegmentIndex) {
         case 0:
             isCelsiusTrue = @"true";
             break;
@@ -84,6 +104,4 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"dealNotification" object: nil];
 }
 
-- (IBAction)addLocation:(id)sender {
-}
 @end
