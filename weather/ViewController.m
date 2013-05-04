@@ -43,12 +43,12 @@
     [self.baseView addSubview:self.baseImg];
     
     // Add label to baseView
-    UILabel *time = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
-    time.center = CGPointMake(20, -12);
-    time.backgroundColor = [UIColor colorWithWhite:1 alpha:0];
-    time.textColor = [UIColor colorWithWhite:1 alpha:1];
-    time.text = @"10:00";
-    [self.baseView addSubview:time];
+    self.timeEarth = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
+    self.timeEarth.center = CGPointMake(20, -12);
+    self.timeEarth.backgroundColor = [UIColor colorWithWhite:1 alpha:0];
+    self.timeEarth.textColor = [UIColor colorWithWhite:1 alpha:1];
+    self.timeEarth.text = @"10:00";
+    [self.baseView addSubview:self.timeEarth];
     
     // Add actual earth
     UIImageView *earthAlone = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 225, 132)];
@@ -56,8 +56,11 @@
     [earthAlone setImage: [UIImage imageNamed:@"earth-without1.png"]];
     [self.view addSubview:earthAlone];
     
-    float targetRotation = -90.0;
-    self.baseView.transform = CGAffineTransformMakeRotation(targetRotation / 180.0 * M_PI);
+    /*float targetRotation = -90.0;
+    self.baseView.transform = CGAffineTransformMakeRotation(targetRotation / 180.0 * M_PI);*/
+    
+    // Set baseview starting angle (angle is long: 3.14)
+    self.baseView.transform = CGAffineTransformMakeRotation(-1.57);
     
     /* ######### END SETTING UP EARTH SLIDER ########## */
     
@@ -385,7 +388,7 @@
     
     NSString *theDate = [format stringFromDate:displayedTimeReal];
     
-    self.displayTime.text = theDate;
+    self.timeEarth.text = theDate;
     
     int currentInt = currentVal;
     
@@ -497,6 +500,12 @@ bool firstTouch = YES;
     UITouch *touch = [touches anyObject];
     CGPoint touchPoint = [touch locationInView:self.view];
     
+    CGPoint center = CGPointMake(160.0f, 373.0f);
+    float xLeg = (center.x - touchPoint.x);
+    float yLeg = (center.y - touchPoint.y);
+    float angle = -atan(xLeg / yLeg);
+    NSLog(@"angle: %f",angle);
+    
     if(touchPoint.y < 373 && touchPoint.y > 200) {
         if([up isEqual:@"sun"]) {
             hasSwitched = NO;
@@ -530,13 +539,16 @@ bool firstTouch = YES;
     float xLeg = (center.x - touchPoint.x);
     float yLeg = (center.y - touchPoint.y);
     float angle = -atan(xLeg / yLeg);
+    NSLog(@"angleMoved: %f",angle);
     
+    //(angle is long: 3.14)
+        
     if(touchPY < 373 && touchPY > 200) {
         
         // Rotate the UIView with image of sun or moon
         self.baseView.transform = CGAffineTransformMakeRotation(angle);
         
-        NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
+        //NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
         
         if(hasSwitched) {
             up = @"moon";
@@ -555,7 +567,7 @@ bool firstTouch = YES;
         // Rotate the UIView with image of sun or moon
         self.baseView.transform = CGAffineTransformMakeRotation(angle);
         
-        NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
+        //NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
         
         if(hasSwitched) {
             up = @"sun";
