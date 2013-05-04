@@ -50,7 +50,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "169"
          endingLineNumber = "169"
-         landmarkName = "-geolocateAddress:"
+         landmarkName = "-dateAtBeginningOfDayForDate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -63,7 +63,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "303"
          endingLineNumber = "303"
-         landmarkName = "-getDate:"
+         landmarkName = "-displayData::"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
