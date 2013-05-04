@@ -64,7 +64,7 @@
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
-                                <state key="highlighted" image="refresh.png">
+                                <state key="highlighted" image="refreshHighlight.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -79,7 +79,7 @@
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
-                                <state key="highlighted" image="locations.png">
+                                <state key="highlighted" image="locationsH.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -300,7 +300,9 @@
         <image name="activeDay.png" width="53" height="50"/>
         <image name="infoBG.png" width="294" height="115"/>
         <image name="locations.png" width="24" height="17"/>
+        <image name="locationsH.png" width="24" height="17"/>
         <image name="refresh.png" width="21" height="29"/>
+        <image name="refreshHighlight.png" width="21" height="28"/>
     </resources>
     <classes>
         <class className="ECSlidingViewController" superclassName="UIViewController">

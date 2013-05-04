@@ -36,6 +36,10 @@
 		CE3B8638173581E6005DDDC1 /* infoBG.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3B8636173581E6005DDDC1 /* infoBG.png */; };
 		CE3B8639173581E6005DDDC1 /* infoBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3B8637173581E6005DDDC1 /* infoBG@2x.png */; };
 		CE3B863B173581F9005DDDC1 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3B863A173581F9005DDDC1 /* icon@2x.png */; };
+		CE3B8640173585E8005DDDC1 /* refreshHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3B863C173585E8005DDDC1 /* refreshHighlight.png */; };
+		CE3B8641173585E8005DDDC1 /* locationsH.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3B863D173585E8005DDDC1 /* locationsH.png */; };
+		CE3B8642173585E8005DDDC1 /* locationsH@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3B863E173585E8005DDDC1 /* locationsH@2x.png */; };
+		CE3B8643173585E8005DDDC1 /* refreshHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3B863F173585E8005DDDC1 /* refreshHighlight@2x.png */; };
 		CE517D9B17342F3F0055C7C7 /* activeDay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE517D9917342F3F0055C7C7 /* activeDay@2x.png */; };
 		CE517D9D17342FCF0055C7C7 /* activeDay.png in Resources */ = {isa = PBXBuildFile; fileRef = CE517D9C17342FCF0055C7C7 /* activeDay.png */; };
 		CE96B6A7173558960094EA0D /* unitSwitchNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = CE96B6A5173558960094EA0D /* unitSwitchNormal.png */; };
@@ -94,6 +98,10 @@
 		CE3B8636173581E6005DDDC1 /* infoBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = infoBG.png; sourceTree = "<group>"; };
 		CE3B8637173581E6005DDDC1 /* infoBG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "infoBG@2x.png"; sourceTree = "<group>"; };
 		CE3B863A173581F9005DDDC1 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		CE3B863C173585E8005DDDC1 /* refreshHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refreshHighlight.png; sourceTree = "<group>"; };
+		CE3B863D173585E8005DDDC1 /* locationsH.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = locationsH.png; sourceTree = "<group>"; };
+		CE3B863E173585E8005DDDC1 /* locationsH@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "locationsH@2x.png"; sourceTree = "<group>"; };
+		CE3B863F173585E8005DDDC1 /* refreshHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refreshHighlight@2x.png"; sourceTree = "<group>"; };
 		CE517D9917342F3F0055C7C7 /* activeDay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "activeDay@2x.png"; sourceTree = "<group>"; };
 		CE517D9C17342FCF0055C7C7 /* activeDay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = activeDay.png; sourceTree = "<group>"; };
 		CE96B6A5173558960094EA0D /* unitSwitchNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unitSwitchNormal.png; sourceTree = "<group>"; };
@@ -199,6 +207,10 @@
 			children = (
 				3A8EF7B617357C41009B6711 /* icon.png */,
 				CE3B863A173581F9005DDDC1 /* icon@2x.png */,
+				CE3B863C173585E8005DDDC1 /* refreshHighlight.png */,
+				CE3B863D173585E8005DDDC1 /* locationsH.png */,
+				CE3B863E173585E8005DDDC1 /* locationsH@2x.png */,
+				CE3B863F173585E8005DDDC1 /* refreshHighlight@2x.png */,
 				CE517D9917342F3F0055C7C7 /* activeDay@2x.png */,
 				CE3B8636173581E6005DDDC1 /* infoBG.png */,
 				CE3B8637173581E6005DDDC1 /* infoBG@2x.png */,
@@ -328,6 +340,10 @@
 				CE3B8638173581E6005DDDC1 /* infoBG.png in Resources */,
 				CE3B8639173581E6005DDDC1 /* infoBG@2x.png in Resources */,
 				CE3B863B173581F9005DDDC1 /* icon@2x.png in Resources */,
+				CE3B8640173585E8005DDDC1 /* refreshHighlight.png in Resources */,
+				CE3B8641173585E8005DDDC1 /* locationsH.png in Resources */,
+				CE3B8642173585E8005DDDC1 /* locationsH@2x.png in Resources */,
+				CE3B8643173585E8005DDDC1 /* refreshHighlight@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
