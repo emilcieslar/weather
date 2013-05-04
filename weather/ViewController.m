@@ -63,12 +63,12 @@
     
 	// setting up day buttons width
     int rectX = 0;
-    CGRect buttonFrame1 = CGRectMake(rectX,self.view.frame.size.height - 50,53,50);
-    CGRect buttonFrame2 = CGRectMake(rectX+53,self.view.frame.size.height - 50,53,50);
-    CGRect buttonFrame3 = CGRectMake(rectX+53*2,self.view.frame.size.height - 50,53,50);
-    CGRect buttonFrame4 = CGRectMake(rectX+53*3,self.view.frame.size.height - 50,53,50);
-    CGRect buttonFrame5 = CGRectMake(rectX+53*4,self.view.frame.size.height - 50,53,50);
-    CGRect buttonFrame6 = CGRectMake(rectX+53*5,self.view.frame.size.height - 50,53,50);
+    CGRect buttonFrame1 = CGRectMake(rectX,0,53,50);
+    CGRect buttonFrame2 = CGRectMake(rectX+53,0,53,50);
+    CGRect buttonFrame3 = CGRectMake(rectX+53*2,0,53,50);
+    CGRect buttonFrame4 = CGRectMake(rectX+53*3,0,53,50);
+    CGRect buttonFrame5 = CGRectMake(rectX+53*4,0,53,50);
+    CGRect buttonFrame6 = CGRectMake(rectX+53*5,0,53,50);
 
     [day1 setFrame:buttonFrame1];
     [day2 setFrame:buttonFrame2];
@@ -76,6 +76,9 @@
     [day4 setFrame:buttonFrame4];
     [day5 setFrame:buttonFrame5];
     [day6 setFrame:buttonFrame6];
+    
+    //z-index of view that holds all the buttons goes to the top (because UIView for sun overlaps it and you can't tap day that overlaps it)
+    [self.view insertSubview:self.menuView atIndex:100];
     
     //setting up location manager
     locationManager = [[CLLocationManager alloc] init];
@@ -476,6 +479,7 @@
 // Set variable isUp and isDown
 NSString *up = @"sun";
 bool hasSwitched = NO;
+bool firstTouch = YES;
 
 // Touches ended method
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -505,6 +509,12 @@ bool hasSwitched = NO;
         } else {
             hasSwitched = NO;
         }
+    }
+    
+    // At first sun is changing to moon (don't know why, but hope this will solve it)
+    if(firstTouch) {
+        hasSwitched = NO;
+        firstTouch = NO;
     }
 }
 
