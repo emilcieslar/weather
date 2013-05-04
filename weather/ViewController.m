@@ -111,7 +111,7 @@
     }
     
     // Add the pan gesture to allow sliding
-    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    [self.menuOpenView addGestureRecognizer:self.slidingViewController.panGesture];
 }
 
 //application did become active
@@ -480,7 +480,6 @@ bool hasSwitched = NO;
 // Touches ended method
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    
     if([up isEqual:@"sun"]) {
         hasSwitched = NO;
     } else {

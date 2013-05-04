@@ -15,9 +15,13 @@
 
 @interface ViewController : UIViewController
 
-// Sun slider
+// EARTH slider
 @property (strong, nonatomic) UIView *baseView;
 @property (strong, nonatomic) UIImageView *baseImg;
+
+// custom view for opening menu (only at top half of the screen)
+@property (strong, nonatomic) IBOutlet UIView *menuOpenView;
+
 
 //icon image
 @property (strong, nonatomic) IBOutlet UIImageView *icona;
