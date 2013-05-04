@@ -45,12 +45,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/ViewController.m"
-         timestampString = "389197666.470693"
+         timestampString = "389373046.435829"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "169"
          endingLineNumber = "169"
-         landmarkName = "-getJSON"
+         landmarkName = "-geolocateAddress:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -58,11 +58,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/ViewController.m"
-         timestampString = "389197666.470693"
+         timestampString = "389373103.114963"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "307"
-         endingLineNumber = "307"
+         startingLineNumber = "303"
+         endingLineNumber = "303"
          landmarkName = "-getDate:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -76,7 +76,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "45"
          endingLineNumber = "45"
-         landmarkName = "-segmentedControlIndexChanged:"
+         landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

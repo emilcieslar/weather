@@ -15,7 +15,7 @@
 
 @implementation ViewController
 
-@synthesize locationManager, currentLocation, icona, icon, week, dayNum, weekdays, finalTheDay, day6,day5,day4,day3,day2,day1, displayTime, json, daily, lastSelected, currentMidnight, humidityText,windText,cloudsText,tempText, sumText, slider;
+@synthesize locationManager, currentLocation, icona, icon, week, dayNum, weekdays, finalTheDay, day6,day5,day4,day3,day2,day1, displayTime, json, daily, lastSelected, currentMidnight, humidityText,windText,cloudsText,tempText, sumText, slider, defaults;
 
 //when app is loaded
 
@@ -46,9 +46,11 @@
     
     //update data everytime app becames active
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    //update data if users chooses °C or °F
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(updateData) name:@"dealNotification" object: nil];
     
-    day1.selected = TRUE;
+    //init user defaults
+    defaults = [NSUserDefaults standardUserDefaults];
     
 }
 
@@ -60,7 +62,8 @@
     
     // Add a shadow to the top view so it looks like it is on top of the others
     self.view.layer.shadowOpacity = 0.75f;
-    self.view.layer.shadowRadius = 2.0f;
+    self.view.layer.shadowRadius = 0.0f;
+    self.view.layer.shadowOffset = CGSizeMake(-4.0, 4.0);
     self.view.layer.shadowColor = [[UIColor blackColor] CGColor];
     
     // Tell it which view should be created under left
@@ -75,14 +78,11 @@
 //application did become active
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    // Kick off your CLLocationManager
     //call the function to get the data and current date
     int timeNow = [self getUnixTime:[NSDate date]];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     int lastUpdate = [[defaults objectForKey:@"lastUpdateTime"]intValue];
     NSData *lastData = [defaults objectForKey:@"lastData"];
-    
     
     NSDate *lastUpdateDate = [NSDate dateWithTimeIntervalSince1970:lastUpdate];
     //display days in buttons
@@ -169,7 +169,6 @@
         
         //display the current city nad state
         NSString *lastAddress = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.country];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject:lastAddress forKey:@"lastAddress"];
         [defaults synchronize];
         
@@ -196,7 +195,6 @@
     NSDate *today = [self dateAtBeginningOfDayForDate:[NSDate date]];
     NSNumber *midnight = [NSNumber numberWithInt:[self getUnixTime:today]];
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:currentTime forKey:@"lastUpdateTime"];
     [defaults setObject:midnight forKey:@"lastMidnight"];
     [defaults setObject:dataURL forKey:@"lastData"];
@@ -223,7 +221,6 @@
 }
 
 - (void)updateData{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     int lastUpdate = [[defaults objectForKey:@"lastUpdateTime"]intValue];
     int currentTime = [[NSNumber numberWithInt:[self getUnixTime:[NSDate date]]] integerValue]+lastSelected*3600;
     
@@ -270,7 +267,6 @@
     float windMeters = [windText floatValue]*0.44704;
     
     //display current values
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isCelsiusTrue = [defaults objectForKey:@"celsius"];
     if ([isCelsiusTrue isEqualToString:@"true"]) {
         //convert F to C°
@@ -336,7 +332,6 @@
 - (IBAction)sliderValueChanged:(UISlider *)sender {
     
     float currentVal = [self.slider value];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     int midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
     int updated = [[defaults objectForKey:@"lastUpdateTime"]intValue];
     int displayedTime = updated+currentVal*3600;
@@ -388,7 +383,6 @@
 
 -(void)setSliderInit{
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     float updated = [[defaults objectForKey:@"lastUpdateTime"]floatValue];
     
     float currentTime = [[NSNumber numberWithInt:[self getUnixTime:[NSDate date]]]floatValue];
@@ -414,7 +408,6 @@
 - (IBAction)dayPressed:(id)sender {
     float x = 0;
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     float midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
     float updated = [[defaults objectForKey:@"lastUpdateTime"]intValue];
     

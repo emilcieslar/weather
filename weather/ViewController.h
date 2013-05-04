@@ -83,4 +83,8 @@
 
 @property (nonatomic) NSInteger lastSelected;
 
+//user defaults
+
+@property (strong, nonatomic) NSUserDefaults *defaults;
+
 @end
