@@ -261,9 +261,9 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Ame-cY-mTH">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Ame-cY-mTH">
                                 <rect key="frame" x="0.0" y="50" width="320" height="366"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.054901960784313725" green="0.054901960784313725" blue="0.054901960784313725" alpha="1" colorSpace="deviceRGB"/>
                                 <connections>
                                     <outlet property="dataSource" destination="sTh-29-ypC" id="fab-DA-XnE"/>
                                     <outlet property="delegate" destination="sTh-29-ypC" id="uIm-bh-N2z"/>
@@ -286,10 +286,11 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.054901960784313725" green="0.054901960784313725" blue="0.054901960784313725" alpha="1" colorSpace="deviceRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="locationsTable" destination="Ame-cY-mTH" id="QdK-t5-E7P"/>
                         <outlet property="unitSwitch" destination="MMn-9g-sus" id="Ibe-eJ-edB"/>
                     </connections>
                 </viewController>
@@ -314,6 +315,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MenuViewController.h"/>
             <relationships>
                 <relationship kind="action" name="segmentedControlIndexChanged:"/>
+                <relationship kind="outlet" name="locationsTable" candidateClass="UITableView"/>
                 <relationship kind="outlet" name="unitSwitch" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
