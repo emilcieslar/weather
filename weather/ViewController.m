@@ -338,7 +338,8 @@
     NSDate *displayedTimeReal = [NSDate dateWithTimeIntervalSince1970:displayedTime];
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"H:mm"];
+    //[format setDateFormat:@"H:mm"];
+    [format setDateFormat:@"h a"];
     
     NSString *theDate = [format stringFromDate:displayedTimeReal];
     
