@@ -27,10 +27,8 @@
 		3A8D181E170E245A0042C50D /* snow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8D1815170E24590042C50D /* snow.png */; };
 		3A8D181F170E245A0042C50D /* storm.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8D1816170E24590042C50D /* storm.png */; };
 		3A8D1820170E245A0042C50D /* sun.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8D1817170E245A0042C50D /* sun.png */; };
-		3A8EF7B117357A11009B6711 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7AF17357A11009B6711 /* icon@2x.png */; };
-		3A8EF7B317357BF7009B6711 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7B217357BF7009B6711 /* icon@2x.png */; };
-		3A8EF7B517357C35009B6711 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7B417357C35009B6711 /* icon.png */; };
 		3A8EF7B717357C41009B6711 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7B617357C41009B6711 /* icon.png */; };
+		3A8EF7B91735800B009B6711 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7B81735800B009B6711 /* icon@2x.png */; };
 		3AB8B7DA173061E6008546DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB8B7D9173061E6008546DB /* QuartzCore.framework */; };
 		3AB8B7E21730F3FA008546DB /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB8B7E11730F3FA008546DB /* InitialViewController.m */; };
 		3AB8B7E31730F6F1008546DB /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB8B7DC1730629A008546DB /* ECSlidingViewController.m */; };
@@ -81,10 +79,8 @@
 		3A8D1815170E24590042C50D /* snow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snow.png; sourceTree = "<group>"; };
 		3A8D1816170E24590042C50D /* storm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = storm.png; sourceTree = "<group>"; };
 		3A8D1817170E245A0042C50D /* sun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sun.png; sourceTree = "<group>"; };
-		3A8EF7AF17357A11009B6711 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
-		3A8EF7B217357BF7009B6711 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
-		3A8EF7B417357C35009B6711 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../../MyWeather/icon.png; sourceTree = "<group>"; };
-		3A8EF7B617357C41009B6711 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		3A8EF7B617357C41009B6711 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
+		3A8EF7B81735800B009B6711 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../../MyWeather/icon@2x.png"; sourceTree = "<group>"; };
 		3AB8B7D9173061E6008546DB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3AB8B7DB1730629A008546DB /* ECSlidingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
 		3AB8B7DC1730629A008546DB /* ECSlidingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
@@ -154,8 +150,6 @@
 		3A8D17C6170DFCB60042C50D = {
 			isa = PBXGroup;
 			children = (
-				3A8EF7B617357C41009B6711 /* icon.png */,
-				3A8EF7B217357BF7009B6711 /* icon@2x.png */,
 				3A8D17D8170DFCB70042C50D /* weather */,
 				3A8D17D1170DFCB70042C50D /* Frameworks */,
 				3A8D17D0170DFCB70042C50D /* Products */,
@@ -199,8 +193,8 @@
 		3A8D17D9170DFCB70042C50D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3A8EF7B417357C35009B6711 /* icon.png */,
-				3A8EF7AF17357A11009B6711 /* icon@2x.png */,
+				3A8EF7B81735800B009B6711 /* icon@2x.png */,
+				3A8EF7B617357C41009B6711 /* icon.png */,
 				CE517D9917342F3F0055C7C7 /* activeDay@2x.png */,
 				3A8D180F170E24590042C50D /* cloud-snow.png */,
 				CE96B6AD17355FDA0094EA0D /* unitSwitchLeft@2x.png */,
@@ -324,10 +318,8 @@
 				CE96B6B417355FDA0094EA0D /* unitSwitchSelected@2x.png in Resources */,
 				CE96B6B71735602D0094EA0D /* addLocation.png in Resources */,
 				CE96B6B81735602D0094EA0D /* addLocation@2x.png in Resources */,
-				3A8EF7B117357A11009B6711 /* icon@2x.png in Resources */,
-				3A8EF7B317357BF7009B6711 /* icon@2x.png in Resources */,
-				3A8EF7B517357C35009B6711 /* icon.png in Resources */,
 				3A8EF7B717357C41009B6711 /* icon.png in Resources */,
+				3A8EF7B91735800B009B6711 /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
