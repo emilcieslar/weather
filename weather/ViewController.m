@@ -521,10 +521,10 @@ bool hasSwitched = NO;
     float yLeg = (center.y - touchPoint.y);
     float angle = -atan(xLeg / yLeg);
     
-    // Rotate the UIView with image of sun or moon
-    self.baseView.transform = CGAffineTransformMakeRotation(angle);
-    
     if(touchPY < 373 && touchPY > 200) {
+        
+        // Rotate the UIView with image of sun or moon
+        self.baseView.transform = CGAffineTransformMakeRotation(angle);
         
         NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
         
@@ -541,6 +541,9 @@ bool hasSwitched = NO;
         }
         
     } else if(touchPY > 373) {
+        
+        // Rotate the UIView with image of sun or moon
+        self.baseView.transform = CGAffineTransformMakeRotation(angle);
         
         NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
         
