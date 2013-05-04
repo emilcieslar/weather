@@ -28,7 +28,6 @@
 		3A8D181F170E245A0042C50D /* storm.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8D1816170E24590042C50D /* storm.png */; };
 		3A8D1820170E245A0042C50D /* sun.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8D1817170E245A0042C50D /* sun.png */; };
 		3A8EF7B717357C41009B6711 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7B617357C41009B6711 /* icon.png */; };
-		3A8EF7B91735800B009B6711 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7B81735800B009B6711 /* icon@2x.png */; };
 		3A8EF7BC1735860A009B6711 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7BA1735860A009B6711 /* default.png */; };
 		3A8EF7BD1735860A009B6711 /* default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8EF7BB1735860A009B6711 /* default@2x.png */; };
 		3AB8B7DA173061E6008546DB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB8B7D9173061E6008546DB /* QuartzCore.framework */; };
@@ -82,7 +81,6 @@
 		3A8D1816170E24590042C50D /* storm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = storm.png; sourceTree = "<group>"; };
 		3A8D1817170E245A0042C50D /* sun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sun.png; sourceTree = "<group>"; };
 		3A8EF7B617357C41009B6711 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
-		3A8EF7B81735800B009B6711 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../../MyWeather/icon@2x.png"; sourceTree = "<group>"; };
 		3A8EF7BA1735860A009B6711 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
 		3A8EF7BB1735860A009B6711 /* default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default@2x.png"; sourceTree = "<group>"; };
 		3AB8B7D9173061E6008546DB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -205,7 +203,6 @@
 			children = (
 				3A8EF7BA1735860A009B6711 /* default.png */,
 				3A8EF7BB1735860A009B6711 /* default@2x.png */,
-				3A8EF7B81735800B009B6711 /* icon@2x.png */,
 				3A8EF7B617357C41009B6711 /* icon.png */,
 				CE3B863D173585E8005DDDC1 /* locationsH.png */,
 				CE3B863E173585E8005DDDC1 /* locationsH@2x.png */,
@@ -337,7 +334,6 @@
 				CE96B6B71735602D0094EA0D /* addLocation.png in Resources */,
 				CE96B6B81735602D0094EA0D /* addLocation@2x.png in Resources */,
 				3A8EF7B717357C41009B6711 /* icon.png in Resources */,
-				3A8EF7B91735800B009B6711 /* icon@2x.png in Resources */,
 				3A8EF7BC1735860A009B6711 /* default.png in Resources */,
 				3A8EF7BD1735860A009B6711 /* default@2x.png in Resources */,
 			);
