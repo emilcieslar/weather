@@ -22,6 +22,9 @@
 // custom view for opening menu (only at top half of the screen)
 @property (strong, nonatomic) IBOutlet UIView *menuOpenView;
 
+// custom view that holds day buttons
+@property (strong, nonatomic) IBOutlet UIView *menuView;
+
 
 //icon image
 @property (strong, nonatomic) IBOutlet UIImageView *icona;
