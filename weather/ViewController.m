@@ -476,6 +476,7 @@
 // Set variable isUp and isDown
 NSString *up = @"sun";
 bool hasSwitched = NO;
+bool firstTouch = YES;
 
 // Touches ended method
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -505,6 +506,12 @@ bool hasSwitched = NO;
         } else {
             hasSwitched = NO;
         }
+    }
+    
+    // At first sun is changing to moon (don't know why, but hope this will solve it)
+    if(firstTouch) {
+        hasSwitched = NO;
+        firstTouch = NO;
     }
 }
 
