@@ -25,6 +25,7 @@
     
     // At the beggining we're at first day
     self.whichDay = 0;
+    self.dayPart = 0;
     
     /* ######### SETTING UP EARTH SLIDER ######### */
     
@@ -265,6 +266,7 @@
                           JSONObjectWithData:responseData //1
                           options:kNilOptions
                           error:&error];
+    NSLog(@"fetchedData: %@",json);
     
     
     week = [[json objectForKey:@"daily"] valueForKey:@"data"];
@@ -401,13 +403,11 @@
     }
 }
 
-bool isWhichDaySetFirstTime = NO;
-
 - (IBAction)sliderValueChanged:(UISlider *)sender {
     
-    NSLog(@"dayPart: %i, whichDay: %i, sliderValue: %f",self.dayPart, self.whichDay, [self.slider value]);
+    //NSLog(@"dayPart: %i, whichDay: %i, sliderValue: %f",self.dayPart, self.whichDay, [self.slider value]);
     
-    if(self.dayPart == 24) {
+    /*if(self.dayPart == 24) {
         // Set only once
         if(!isWhichDaySet) {
             // Moving back or forth
@@ -419,11 +419,11 @@ bool isWhichDaySetFirstTime = NO;
             self.whichDay = 0;
         }
         
-    } else {
+    } else {*/
         
         isWhichDaySet = NO;
         
-        [self.slider setValue:self.dayPart+self.whichDay];
+        //[self.slider setValue:self.dayPart+self.whichDay];
         float currentVal = [self.slider value];
         int midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
         int updated = [[defaults objectForKey:@"lastUpdateTime"]intValue];
@@ -468,7 +468,7 @@ bool isWhichDaySetFirstTime = NO;
             day1.selected = TRUE;
         }
     
-    }
+    //}
     
 }
 
@@ -558,7 +558,7 @@ bool isWhichDaySet = NO;
     float xLeg = (center.x - touchPoint.x);
     float yLeg = (center.y - touchPoint.y);
     float angle = -atan(xLeg / yLeg);
-    NSLog(@"angle: %f",angle);
+    //NSLog(@"angle: %f",angle);
     startAngle = angle;
     
     if(touchPoint.y < 373 && touchPoint.y > 200) {
@@ -584,7 +584,14 @@ bool isWhichDaySet = NO;
 
 // Degrees to radians definition
 #define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
+// Default angle (around 1.57)
 float defAngle = DEGREES_TO_RADIANS(90);
+// Define angle that divides angle into defined number of parts
+float divAngle;
+// angle + defAngle (for example -1.56 + 1.57 = 0.1)
+float finAngle;
+int partsNum;
+int dayPartFirst;
 
 // Touches moved method
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -614,11 +621,39 @@ float defAngle = DEGREES_TO_RADIANS(90);
     }
     
     // angle is long: 3.14; hours for half a day: 12
-
-    if(touchPY < 373 && touchPY > 200) {
     
+    // If we're touching above horizont
+    if(touchPY < 373 && touchPY > 200) {
+        
+        finAngle = angle+defAngle;
+        // If we're above 0 (fixes bug when on the beggining you get minus values)
+        if(finAngle > 0) {
+            
+            /* We're now able to divide half day into parts from 0 to defAngle*2, depends on how many parts 
+               we want the day to be divided. For example if sun is up for 12 hours we divide 
+               defAngle*2/12 and we've got 12 parts of half day. */
+            // Define number of parts
+            partsNum = 12;
+            dayPartFirst = 12;
+            // Define angle that divides angle into defined number of parts
+            divAngle = (defAngle*2)/partsNum;
+            NSLog(@"angle: %f, divAngle: %f",finAngle, divAngle);
+            
+            // Goes through if statemens as many as there are parts
+            for (int i = 0; i < partsNum; i++) {
+                if (finAngle >= i*divAngle && finAngle < (1+i)*divAngle) {
+                    NSLog(@"%f, %f",i*divAngle, (1+i)*divAngle);
+                    
+                    self.dayPart = i;
+                    [self.slider setValue:self.dayPart];
+                    [self sliderValueChanged:self.slider];
+                }
+            }
+            
+        }
+        
         // If we're angle is less than 0
-        if(angle < 0) {
+        /*if(angle < 0) {
             if (fabsf(angle) <= defAngle && fabsf(angle) >= defAngle/6*5) {
                 if(hasSwitched) {self.dayPart = 12;} else {self.dayPart = 0;}
                 [self sliderValueChanged:self.slider];
@@ -665,13 +700,12 @@ float defAngle = DEGREES_TO_RADIANS(90);
                 if(hasSwitched) {self.dayPart = 24;} else {self.dayPart = 12;}
                 [self sliderValueChanged:self.slider];
             }
-        }
+        }*/
         
         // Rotate the UIView with image of sun or moon
         self.baseView.transform = CGAffineTransformMakeRotation(angle);
         
-        //NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
-        
+        // If we ended touch and switched position of our fingers (from bottom to top)
         if(hasSwitched) {
             up = @"moon";
         } else {
@@ -686,8 +720,34 @@ float defAngle = DEGREES_TO_RADIANS(90);
         
     } else if(touchPY > 373) {
         
+        finAngle = angle+defAngle;
+        // If we're above 0 (fixes bug when on the beggining you get minus values)
+        if(finAngle > 0) {
+            
+            /* We're now able to divide half day into parts from 0 to defAngle*2, depends on how many parts
+             we want the day to be divided. For example if sun is up for 12 hours we divide
+             defAngle*2/12 and we've got 12 parts of half day. */
+            // Define number of parts
+            partsNum = 12;
+            // Define angle that divides angle into defined number of parts
+            divAngle = (defAngle*2)/partsNum;
+            //NSLog(@"angle: %f, divAngle: %f",finAngle, divAngle);
+            
+            // Goes through if statemens as many as there are parts
+            for (int i = 0; i < partsNum; i++) {
+                if (finAngle >= i*divAngle && finAngle < (1+i)*divAngle) {
+                    NSLog(@"%f, %f",i*divAngle, (1+i)*divAngle);
+                    self.dayPart = i+dayPartFirst;
+                    [self.slider setValue:self.dayPart];
+                    [self sliderValueChanged:self.slider];
+                }
+            }
+            
+        }
+        
+        
         // If we're angle is less than 0
-        if(angle < 0) {
+        /*if(angle < 0) {
             if(fabsf(angle) <= defAngle && fabsf(angle) >= defAngle/6*5) {
                 if(!hasSwitched) {self.dayPart = 12;} else {self.dayPart = 0;}
                 [self sliderValueChanged:self.slider];
@@ -733,7 +793,7 @@ float defAngle = DEGREES_TO_RADIANS(90);
                 if(!hasSwitched) {self.dayPart = 24;} else {self.dayPart = 12;}
                 [self sliderValueChanged:self.slider];
             }
-        }
+        }*/
         
         // Rotate the UIView with image of sun or moon
         self.baseView.transform = CGAffineTransformMakeRotation(angle);
