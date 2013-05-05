@@ -45,24 +45,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/ViewController.m"
-         timestampString = "389373046.435829"
+         timestampString = "389437946.274398"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "169"
-         endingLineNumber = "169"
-         landmarkName = "@implementation ViewController"
-         landmarkType = "3">
+         startingLineNumber = "170"
+         endingLineNumber = "170"
+         landmarkName = "-locationManager:didUpdateToLocation:fromLocation:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/ViewController.m"
-         timestampString = "389373103.114963"
+         timestampString = "389437946.274398"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "303"
-         endingLineNumber = "303"
+         startingLineNumber = "308"
+         endingLineNumber = "308"
          landmarkName = "-displayData::"
          landmarkType = "5">
       </FileBreakpoint>

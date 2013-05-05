@@ -89,7 +89,7 @@
     //setting up location manager
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = (id)self;
-    locationManager.distanceFilter = kCLDistanceFilterNone;
+    locationManager.distanceFilter = 1000.0f;
     locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     
     //update data everytime app becames active
@@ -140,7 +140,6 @@
     
     if (timeNow > lastUpdate+36000 || lastData == nil) {
         [locationManager startUpdatingLocation];
-        [self getJSON];
     } else {
         NSLog(@"Your data are up to date!");
         [self fetchedData:lastData];
@@ -163,9 +162,11 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     
     //we got the location
-    self.currentLocation = newLocation;
     [locationManager stopUpdatingLocation];
+    self.currentLocation = newLocation;
     [self geolocateAddress:newLocation];
+    NSLog(@"updated");
+    [self getJSON];
     
 }
 
@@ -248,6 +249,8 @@
     [defaults setObject:dataURL forKey:@"lastData"];
     [defaults synchronize];
     
+    NSLog(@"Loaded new data");
+    
     [self fetchedData:dataURL];
     
 }
@@ -257,10 +260,12 @@
     
     //parse forecast
     NSError* error;
+    
     json = [NSJSONSerialization
                           JSONObjectWithData:responseData //1
                           options:kNilOptions
                           error:&error];
+    
     
     week = [[json objectForKey:@"daily"] valueForKey:@"data"];
     daily = [[json objectForKey:@"hourly"] valueForKey:@"data"];
@@ -386,7 +391,7 @@
     NSMutableArray *buttonArray =  [[NSMutableArray alloc] initWithObjects:day1,day2,day3,day4,day5,day6,nil];
     
     for (int i = 0; i <= [buttonArray count]-1; i++) {
-        int dayNumNew = dayNum+1+i;
+        int dayNumNew = dayNum+i;
         
         if (dayNumNew > 6 ) {
             dayNumNew = dayNumNew-7;
@@ -498,8 +503,8 @@ bool isWhichDaySetFirstTime = NO;
 - (IBAction)refresh:(id)sender {
     // Kick off your CLLocationManager
     [locationManager startUpdatingLocation];
-    //call the function to get the data and current date
-    [self getJSON];
+    
+    NSLog(@"aha");
 }
 
 - (void)didReceiveMemoryWarning
