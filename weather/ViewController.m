@@ -24,7 +24,7 @@
     [super viewDidLoad];
     
     // At the beggining we're at first day
-    self.whichDay = 1;
+    self.whichDay = 0;
     
     /* ######### SETTING UP EARTH SLIDER ######### */
     
@@ -399,11 +399,32 @@
 - (IBAction)sliderValueChanged:(UISlider *)sender {
     
     NSLog(@"dayPart: %i, whichDay: %i",self.dayPart, self.whichDay);
-    if(self.dayPart == 23) {
-        self.whichDay++;
+    if(self.dayPart == 24) {
+        // Set only once
+        if(!isWhichDaySet) {
+            // Moving back or forth
+            self.whichDay = self.whichDay+24;
+            isWhichDaySet = YES;
+        }
+    } else {
+        isWhichDaySet = NO;
     }
     
-    [self.slider setValue:self.dayPart*self.whichDay];
+    if(goesBack) {
+        if(self.dayPart == 0) {
+            
+        }
+    }
+    
+    /*if(self.whichDay == -24) {
+        self.whichDay = 140;
+    }*/
+    
+    if(self.whichDay == 144) {
+        self.whichDay = 0;
+    }
+    
+    [self.slider setValue:self.dayPart+self.whichDay];
     float currentVal = [self.slider value];
     int midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
     int updated = [[defaults objectForKey:@"lastUpdateTime"]intValue];
@@ -508,12 +529,15 @@
 
 /* ########################## EARTH SLIDER STUFF ############################ */
 
-// Set variable isUp and isDown
+// Set variables
 NSString *up = @"sun";
 bool hasSwitched = NO;
 bool firstTouch = YES;
 bool goesBack = NO;
+bool startAngleSet = NO;
 float startAngle;
+float nextAngle;
+bool isWhichDaySet = NO;
 
 // Touches ended method
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -572,17 +596,25 @@ float startAngle;
     float yLeg = (center.y - touchPoint.y);
     float angle = -atan(xLeg / yLeg);
     
-    // angle is long: 3.14; hours for half a day: 12
-    //NSLog(@"angleMoved: %f, required: %f",fabsf(angle),1.57);
-    if(touchPY < 373 && touchPY > 200) {
-        
-        // Goes back or forward?
-        if(startAngle > angle) {
+    // If it goes back in time or forward in time
+    //NSLog(@"Goes back: %d",goesBack);
+    if(startAngleSet) {
+        nextAngle = angle;
+        startAngleSet = NO;
+        if(startAngle < nextAngle) {
             goesBack = NO;
         } else {
             goesBack = YES;
         }
-        
+    } else {
+        startAngle = angle;
+        startAngleSet = YES;
+    }
+    
+    // angle is long: 3.14; hours for half a day: 12
+
+    if(touchPY < 373 && touchPY > 200) {
+    
         // If we're angle is less than 0
         if(angle < 0) {
             if(fabsf(angle) <= 1.57 && fabsf(angle) >= 1.57/6*5) {
@@ -691,10 +723,11 @@ float startAngle;
             } else if(fabsf(angle) > 1.57/6*4 && fabsf(angle) <= 1.57/6*5) {
                 if(!hasSwitched) {self.dayPart = 22;} else {self.dayPart = 10;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*5 && fabsf(angle) <= 1.57/6*6) {
+            } else if(fabsf(angle) > 1.57/6*5 && fabsf(angle) <= 1.45) {
                 if(!hasSwitched) {self.dayPart = 23;} else {self.dayPart = 11;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*6 && fabsf(angle) <= 1.57) {
+            } else if(fabsf(angle) > 1.45 && fabsf(angle) <= 1.57) {
+                NSLog(@"Last one! angle: %f",angle);
                 if(!hasSwitched) {self.dayPart = 24;} else {self.dayPart = 12;}
                 [self sliderValueChanged:self.slider];
             }
