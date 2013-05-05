@@ -396,80 +396,86 @@
     }
 }
 
+bool isWhichDaySetFirstTime = NO;
+
 - (IBAction)sliderValueChanged:(UISlider *)sender {
     
     NSLog(@"dayPart: %i, whichDay: %i",self.dayPart, self.whichDay);
-    if(self.dayPart == 24) {
+    if(self.dayPart == -1) {
+        NSLog(@"%d",isWhichDaySetFirstTime);
+        // Set only once
+        if(!isWhichDaySet) {
+            // Moving back
+            if(goesBack) {self.whichDay = self.whichDay-24;} else {self.whichDay = self.whichDay+24;}
+            isWhichDaySet = YES;
+        }
+        
+        if(self.whichDay == -24) {
+            self.whichDay = 120;
+        }
+        
+    } else if(self.dayPart == 24) {
         // Set only once
         if(!isWhichDaySet) {
             // Moving back or forth
-            self.whichDay = self.whichDay+24;
+            if(goesBack) {self.whichDay = self.whichDay-24;} else {self.whichDay = self.whichDay+24;}
             isWhichDaySet = YES;
         }
-    } else {
-        isWhichDaySet = NO;
-    }
-    
-    if(goesBack) {
-        if(self.dayPart == 0) {
-            
+        
+        if(self.whichDay == 144) {
+            self.whichDay = 0;
         }
+        
+    } else {
+        
+        isWhichDaySet = NO;
+    
+        [self.slider setValue:self.dayPart+self.whichDay];
+        float currentVal = [self.slider value];
+        int midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
+        int updated = [[defaults objectForKey:@"lastUpdateTime"]intValue];
+        int displayedTime = updated+currentVal*3600;
+        NSDate *displayedTimeReal = [NSDate dateWithTimeIntervalSince1970:displayedTime];
+        
+        NSDateFormatter *format = [[NSDateFormatter alloc] init];
+        //[format setDateFormat:@"H:mm"];
+        [format setDateFormat:@"h a"];
+        
+        NSString *theDate = [format stringFromDate:displayedTimeReal];
+        
+        self.timeEarth.text = theDate;
+        self.displayTime.text = theDate;
+        
+        int currentInt = currentVal;
+        
+        if (currentInt != lastSelected) {
+            lastSelected = currentInt;
+            [self updateData];
+        }
+        
+        
+        day1.selected = FALSE;
+        day2.selected = FALSE;
+        day3.selected = FALSE;
+        day4.selected = FALSE;
+        day5.selected = FALSE;
+        day6.selected = FALSE;
+        
+        if(displayedTime > midnight+(5*24*3600)) {
+            day6.selected = TRUE;
+        } else if(displayedTime > midnight+(4*24*3600)) {
+            day5.selected = TRUE;
+        } else if(displayedTime > midnight+(3*24*3600)) {
+            day4.selected = TRUE;
+        } else if(displayedTime > midnight+(48*3600)) {
+            day3.selected = TRUE;
+        } else if (displayedTime > midnight+(24*3600)) {
+            day2.selected = TRUE;
+        } else{
+            day1.selected = TRUE;
+        }
+    
     }
-    
-    /*if(self.whichDay == -24) {
-        self.whichDay = 140;
-    }*/
-    
-    if(self.whichDay == 144) {
-        self.whichDay = 0;
-    }
-    
-    [self.slider setValue:self.dayPart+self.whichDay];
-    float currentVal = [self.slider value];
-    int midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
-    int updated = [[defaults objectForKey:@"lastUpdateTime"]intValue];
-    int displayedTime = updated+currentVal*3600;
-    NSDate *displayedTimeReal = [NSDate dateWithTimeIntervalSince1970:displayedTime];
-    
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    //[format setDateFormat:@"H:mm"];
-    [format setDateFormat:@"h a"];
-    
-    NSString *theDate = [format stringFromDate:displayedTimeReal];
-    
-    self.timeEarth.text = theDate;
-    self.displayTime.text = theDate;
-    
-    int currentInt = currentVal;
-    
-    if (currentInt != lastSelected) {
-        lastSelected = currentInt;
-        [self updateData];
-    }
-    
-    
-    day1.selected = FALSE;
-    day2.selected = FALSE;
-    day3.selected = FALSE;
-    day4.selected = FALSE;
-    day5.selected = FALSE;
-    day6.selected = FALSE;
-    
-    if(displayedTime > midnight+(5*24*3600)) {
-        day6.selected = TRUE;
-    } else if(displayedTime > midnight+(4*24*3600)) {
-        day5.selected = TRUE;
-    } else if(displayedTime > midnight+(3*24*3600)) {
-        day4.selected = TRUE;
-    } else if(displayedTime > midnight+(48*3600)) {
-        day3.selected = TRUE;
-    } else if (displayedTime > midnight+(24*3600)) {
-        day2.selected = TRUE;
-    } else{
-        day1.selected = TRUE;
-    }
-    
-   
     
 }
 
@@ -617,7 +623,10 @@ bool isWhichDaySet = NO;
     
         // If we're angle is less than 0
         if(angle < 0) {
-            if(fabsf(angle) <= 1.57 && fabsf(angle) >= 1.57/6*5) {
+            if(fabsf(angle) <= 1.57 && fabsf(angle) > 1.45) {
+                self.dayPart = -1;
+                [self sliderValueChanged:self.slider];
+            } else if (fabsf(angle) <= 1.45 && fabsf(angle) >= 1.57/6*5) {
                 if(hasSwitched) {self.dayPart = 12;} else {self.dayPart = 0;}
                 [self sliderValueChanged:self.slider];
             } else if(fabsf(angle) < 1.57/6*5 && fabsf(angle) >= 1.57/6*4) {
