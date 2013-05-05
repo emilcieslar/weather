@@ -400,21 +400,9 @@ bool isWhichDaySetFirstTime = NO;
 
 - (IBAction)sliderValueChanged:(UISlider *)sender {
     
-    NSLog(@"dayPart: %i, whichDay: %i",self.dayPart, self.whichDay);
-    if(self.dayPart == -1) {
-        NSLog(@"%d",isWhichDaySetFirstTime);
-        // Set only once
-        if(!isWhichDaySet) {
-            // Moving back
-            if(goesBack) {self.whichDay = self.whichDay-24;} else {self.whichDay = self.whichDay+24;}
-            isWhichDaySet = YES;
-        }
-        
-        if(self.whichDay == -24) {
-            self.whichDay = 120;
-        }
-        
-    } else if(self.dayPart == 24) {
+    NSLog(@"dayPart: %i, whichDay: %i, sliderValue: %f",self.dayPart, self.whichDay, [self.slider value]);
+    
+    if(self.dayPart == 24) {
         // Set only once
         if(!isWhichDaySet) {
             // Moving back or forth
@@ -429,7 +417,7 @@ bool isWhichDaySetFirstTime = NO;
     } else {
         
         isWhichDaySet = NO;
-    
+        
         [self.slider setValue:self.dayPart+self.whichDay];
         float currentVal = [self.slider value];
         int midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
@@ -589,12 +577,15 @@ bool isWhichDaySet = NO;
     }
 }
 
+// Degrees to radians definition
+#define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
+float defAngle = DEGREES_TO_RADIANS(90);
+
 // Touches moved method
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     CGPoint touchPoint = [touch locationInView:self.view];
-    
     float touchPY = touchPoint.y;
     
     CGPoint center = CGPointMake(160.0f, 373.0f);
@@ -623,25 +614,22 @@ bool isWhichDaySet = NO;
     
         // If we're angle is less than 0
         if(angle < 0) {
-            if(fabsf(angle) <= 1.57 && fabsf(angle) > 1.45) {
-                self.dayPart = -1;
-                [self sliderValueChanged:self.slider];
-            } else if (fabsf(angle) <= 1.45 && fabsf(angle) >= 1.57/6*5) {
+            if (fabsf(angle) <= defAngle && fabsf(angle) >= defAngle/6*5) {
                 if(hasSwitched) {self.dayPart = 12;} else {self.dayPart = 0;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6*5 && fabsf(angle) >= 1.57/6*4) {
+            } else if(fabsf(angle) < defAngle/6*5 && fabsf(angle) >= defAngle/6*4) {
                 if(hasSwitched) {self.dayPart = 13;} else {self.dayPart = 1;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6*4 && fabsf(angle) >= 1.57/6*3) {
+            } else if(fabsf(angle) < defAngle/6*4 && fabsf(angle) >= defAngle/6*3) {
                 if(hasSwitched) {self.dayPart = 14;} else {self.dayPart = 2;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6*3 && fabsf(angle) >= 1.57/6*2) {
+            } else if(fabsf(angle) < defAngle/6*3 && fabsf(angle) >= defAngle/6*2) {
                 if(hasSwitched) {self.dayPart = 15;} else {self.dayPart = 3;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6*2 && fabsf(angle) >= 1.57/6*1) {
+            } else if(fabsf(angle) < defAngle/6*2 && fabsf(angle) >= defAngle/6*1) {
                 if(hasSwitched) {self.dayPart = 16;} else {self.dayPart = 4;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6 && fabsf(angle) >= 0) {
+            } else if(fabsf(angle) < defAngle/6 && fabsf(angle) >= 0) {
                 if(hasSwitched) {self.dayPart = 17;} else {self.dayPart = 5;}
                 [self sliderValueChanged:self.slider];
             }
@@ -649,25 +637,26 @@ bool isWhichDaySet = NO;
         
         // If we're angle is more than 0
         if(angle > 0) {
-            if(fabsf(angle) > 0 && fabsf(angle) <= 1.57/6) {
+            if(fabsf(angle) > 0 && fabsf(angle) <= defAngle/6) {
                 if(hasSwitched) {self.dayPart = 18;} else {self.dayPart = 6;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6 && fabsf(angle) <= 1.57/6*2) {
+            } else if(fabsf(angle) > defAngle/6 && fabsf(angle) <= defAngle/6*2) {
                 if(hasSwitched) {self.dayPart = 19;} else {self.dayPart = 7;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*2 && fabsf(angle) <= 1.57/6*3) {
+            } else if(fabsf(angle) > defAngle/6*2 && fabsf(angle) <= defAngle/6*3) {
                 if(hasSwitched) {self.dayPart = 20;} else {self.dayPart = 8;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*3 && fabsf(angle) <= 1.57/6*4) {
+            } else if(fabsf(angle) > defAngle/6*3 && fabsf(angle) <= defAngle/6*4) {
                 if(hasSwitched) {self.dayPart = 21;} else {self.dayPart = 9;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*4 && fabsf(angle) <= 1.57/6*5) {
+            } else if(fabsf(angle) > defAngle/6*4 && fabsf(angle) <= defAngle/6*5) {
                 if(hasSwitched) {self.dayPart = 22;} else {self.dayPart = 10;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*5 && fabsf(angle) <= 1.57/6*6) {
+            } else if(fabsf(angle) > defAngle/6*5 && fabsf(angle) <= 1.45) {
+                NSLog(@"Last! angle: %f",angle);
                 if(hasSwitched) {self.dayPart = 23;} else {self.dayPart = 11;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*6 && fabsf(angle) <= 1.57) {
+            } else if(fabsf(angle) > 1.45 && fabsf(angle) <= defAngle) {
                 if(hasSwitched) {self.dayPart = 24;} else {self.dayPart = 12;}
                 [self sliderValueChanged:self.slider];
             }
@@ -694,22 +683,22 @@ bool isWhichDaySet = NO;
         
         // If we're angle is less than 0
         if(angle < 0) {
-            if(fabsf(angle) <= 1.57 && fabsf(angle) >= 1.57/6*5) {
+            if(fabsf(angle) <= defAngle && fabsf(angle) >= defAngle/6*5) {
                 if(!hasSwitched) {self.dayPart = 12;} else {self.dayPart = 0;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6*5 && fabsf(angle) >= 1.57/6*4) {
+            } else if(fabsf(angle) < defAngle/6*5 && fabsf(angle) >= defAngle/6*4) {
                 if(!hasSwitched) {self.dayPart = 13;} else {self.dayPart = 1;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6*4 && fabsf(angle) >= 1.57/6*3) {
+            } else if(fabsf(angle) < defAngle/6*4 && fabsf(angle) >= defAngle/6*3) {
                 if(!hasSwitched) {self.dayPart = 14;} else {self.dayPart = 2;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6*3 && fabsf(angle) >= 1.57/6*2) {
+            } else if(fabsf(angle) < defAngle/6*3 && fabsf(angle) >= defAngle/6*2) {
                 if(!hasSwitched) {self.dayPart = 15;} else {self.dayPart = 3;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6*2 && fabsf(angle) >= 1.57/6*1) {
+            } else if(fabsf(angle) < defAngle/6*2 && fabsf(angle) >= defAngle/6*1) {
                 if(!hasSwitched) {self.dayPart = 16;} else {self.dayPart = 4;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < 1.57/6 && fabsf(angle) >= 0) {
+            } else if(fabsf(angle) < defAngle/6 && fabsf(angle) >= 0) {
                 if(!hasSwitched) {self.dayPart = 17;} else {self.dayPart = 5;}
                 [self sliderValueChanged:self.slider];
             }
@@ -720,23 +709,22 @@ bool isWhichDaySet = NO;
             if(fabsf(angle) > 0 && fabsf(angle) <= 1.57/6) {
                 if(!hasSwitched) {self.dayPart = 18;} else {self.dayPart = 6;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6 && fabsf(angle) <= 1.57/6*2) {
+            } else if(fabsf(angle) > defAngle/6 && fabsf(angle) <= defAngle/6*2) {
                 if(!hasSwitched) {self.dayPart = 19;} else {self.dayPart = 7;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*2 && fabsf(angle) <= 1.57/6*3) {
+            } else if(fabsf(angle) > defAngle/6*2 && fabsf(angle) <= defAngle/6*3) {
                 if(!hasSwitched) {self.dayPart = 20;} else {self.dayPart = 8;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*3 && fabsf(angle) <= 1.57/6*4) {
+            } else if(fabsf(angle) > defAngle/6*3 && fabsf(angle) <= defAngle/6*4) {
                 if(!hasSwitched) {self.dayPart = 21;} else {self.dayPart = 9;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*4 && fabsf(angle) <= 1.57/6*5) {
+            } else if(fabsf(angle) > defAngle/6*4 && fabsf(angle) <= defAngle/6*5) {
                 if(!hasSwitched) {self.dayPart = 22;} else {self.dayPart = 10;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.57/6*5 && fabsf(angle) <= 1.45) {
+            } else if(fabsf(angle) > defAngle/6*5 && fabsf(angle) <= 1.45) {
                 if(!hasSwitched) {self.dayPart = 23;} else {self.dayPart = 11;}
                 [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.45 && fabsf(angle) <= 1.57) {
-                NSLog(@"Last one! angle: %f",angle);
+            } else if(fabsf(angle) > 1.45 && fabsf(angle) <= defAngle) {
                 if(!hasSwitched) {self.dayPart = 24;} else {self.dayPart = 12;}
                 [self sliderValueChanged:self.slider];
             }
