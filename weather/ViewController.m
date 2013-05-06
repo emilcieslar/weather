@@ -23,48 +23,71 @@
 {
     [super viewDidLoad];
     
-    // At the beggining we're at first day
-    self.whichDay = 0;
-    self.dayPart = 0;
-    
     /* ######### SETTING UP EARTH SLIDER ######### */
     
     // Add earth
-    UIImageView *earth = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 225, 132)];
-    [earth setCenter:CGPointMake(160, 329)];
-    [earth setImage: [UIImage imageNamed:@"earth-around1.png"]];
-    [self.view addSubview:earth];
+    //UIImageView *earth = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 264, 155)];
+    self.earth = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 225, 132)];
+    [self.earth setCenter:CGPointMake(160, 329)];
+    //[earth setImage: [UIImage imageNamed:@"earth.png"]];
+    [self.earth setImage: [UIImage imageNamed:@"earth-around1.png"]];
+    [self.view addSubview:self.earth];
     
     // Init baseView (UIView)
     self.baseView = [[UIView alloc] init];
+    //[self.baseView setFrame:CGRectMake(0, 0, 34, 304)];
     [self.baseView setFrame:CGRectMake(0, 0, 30, 258)];
-    [self.baseView setCenter: CGPointMake(160,372)];
+    [self.baseView setCenter: CGPointMake(160,373)];
+    //[baseView setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
     [self.view addSubview:self.baseView];
     
     // Add sun to baseView
+    //UIImageView *baseImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 34, 152)];
     self.baseImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 129)];
+    //[baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"sun.png"]]];
     [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"sun1.png"]]];
     [self.baseView addSubview:self.baseImg];
+    self.baseImg.userInteractionEnabled = YES;
+    // Add gesture recognizer
+    UIPanGestureRecognizer *sunRecog = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleTouchSun:)];
+    sunRecog.delegate = self;
+    [self.baseImg addGestureRecognizer:sunRecog];
+    
+    // Add moon to baseView
+    self.baseMoon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 129, 30, 129)];
+    [self.baseMoon setImage: [UIImage imageNamed:[NSString stringWithFormat:@"moon.png"]]];
+    [self.baseView addSubview:self.baseMoon];
+    self.baseMoon.userInteractionEnabled = YES;
+    // Add gesture recognizer
+    UIPanGestureRecognizer *moonRecog = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleTouchMoon:)];
+    moonRecog.delegate = self;
+    [self.baseMoon addGestureRecognizer:moonRecog];
+    
+    // Add hideView (UIView)
+    self.hideView = [[UIView alloc] init];
+    [self.hideView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-373)];
+    [self.hideView setCenter: CGPointMake(160,(self.view.frame.size.height-373)/2+373)];
+    [self.hideView setBackgroundColor:[UIColor colorWithHue:0 saturation:0 brightness:0.09 alpha:1]];
+    [self.view addSubview:self.hideView];
     
     // Add label to baseView
-    self.timeEarth = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
-    self.timeEarth.center = CGPointMake(20, -12);
-    self.timeEarth.backgroundColor = [UIColor colorWithWhite:1 alpha:0];
-    self.timeEarth.textColor = [UIColor colorWithWhite:1 alpha:1];
-    self.timeEarth.text = @"10:00";
-    [self.baseView addSubview:self.timeEarth];
+    /*UILabel *time = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
+     time.center = CGPointMake(20, -12);
+     time.backgroundColor = [UIColor colorWithWhite:1 alpha:0];
+     time.textColor = [UIColor colorWithWhite:1 alpha:1];
+     time.text = @"10:00";
+     [self.baseView addSubview:time];*/
     
     // Add actual earth
-    UIImageView *earthAlone = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 225, 132)];
-    [earthAlone setCenter:CGPointMake(160, 329)];
-    [earthAlone setImage: [UIImage imageNamed:@"earth-without1.png"]];
-    [self.view addSubview:earthAlone];
+    //UIImageView *earthAlone = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 264, 155)];
+    self.earthAlone = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 225, 132)];
+    [self.earthAlone setCenter:CGPointMake(160, 329)];
+    //[earthAlone setImage: [UIImage imageNamed:@"earth-alone.png"]];
+    [self.earthAlone setImage: [UIImage imageNamed:@"earth-without1.png"]];
+    [self.view addSubview:self.earthAlone];
     
-    /*float targetRotation = -90.0;
-    self.baseView.transform = CGAffineTransformMakeRotation(targetRotation / 180.0 * M_PI);*/
-    
-    // Set baseview starting angle (angle is long: 3.14)
-    self.baseView.transform = CGAffineTransformMakeRotation(-1.57);
+    float targetRotation = -83.0;
+    self.baseView.transform = CGAffineTransformMakeRotation(targetRotation / 180.0 * M_PI);
     
     /* ######### END SETTING UP EARTH SLIDER ########## */
     
@@ -166,7 +189,7 @@
     [locationManager stopUpdatingLocation];
     self.currentLocation = newLocation;
     [self geolocateAddress:newLocation];
-    NSLog(@"updated");
+    //NSLog(@"updated");
     [self getJSON];
     
 }
@@ -266,11 +289,43 @@
                           JSONObjectWithData:responseData //1
                           options:kNilOptions
                           error:&error];
-    NSLog(@"fetchedData: %@",json);
-    
     
     week = [[json objectForKey:@"daily"] valueForKey:@"data"];
     daily = [[json objectForKey:@"hourly"] valueForKey:@"data"];
+    
+    
+    // Get sunRise and sunSet
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"H"];
+    int sunRise;
+    int sunSet;
+    NSDate *sunRiseReal;
+    NSDate *sunSetReal;
+    int sunRiseFin;
+    int sunSetFin;
+    self.eachDay = [[NSMutableArray alloc] init];
+        
+    for(int i=0;i<6;i++) {
+        sunRise = [[[week objectAtIndex:i] valueForKey:@"sunriseTime"] intValue];
+        sunRiseReal = [NSDate dateWithTimeIntervalSince1970:sunRise];
+        sunRiseFin = [[format stringFromDate:sunRiseReal] intValue];
+        sunSet = [[[week objectAtIndex:i] valueForKey:@"sunsetTime"] intValue];
+        sunSetReal = [NSDate dateWithTimeIntervalSince1970:sunSet];
+        sunSetFin = [[format stringFromDate:sunSetReal] intValue];
+        //NSLog(@"sunRise: %i",sunRiseFin);
+        //NSLog(@"sunSet: %i",sunSetFin);
+        self.dayLong = sunSetFin-sunRiseFin;
+        //NSLog(@"dayLong: %i",self.dayLong);
+        for(int j=0;j<24;j++) {
+            if(sunRiseFin+j <= 24) {
+                [self.eachDay addObject:[NSNumber numberWithInt:sunRiseFin+j]];
+                NSLog(@"eachDay: %@",[self.eachDay objectAtIndex:j]);
+            } else {
+                [self.eachDay addObject:[NSNumber numberWithInt:sunRiseFin+j-24]];
+                NSLog(@"eachDay: %@",[self.eachDay objectAtIndex:j]);
+            }
+        }
+    }
     
     [self updateData];
 }
@@ -280,6 +335,13 @@
     int currentTime = [[NSNumber numberWithInt:[self getUnixTime:[NSDate date]]] integerValue]+lastSelected*3600;
     
     NSUInteger index = (currentTime - lastUpdate)/3600;
+    
+    // Get last update to set time for earth controller
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"H"];
+    NSDate *lastUpdateReal = [NSDate dateWithTimeIntervalSince1970:lastUpdate];
+    int lastUpdateFin = [[format stringFromDate:lastUpdateReal] intValue];
+    NSLog(@"lastUpdate: %i",lastUpdateFin);
     
     if (index < 48 ) {
         
@@ -405,70 +467,50 @@
 
 - (IBAction)sliderValueChanged:(UISlider *)sender {
     
-    //NSLog(@"dayPart: %i, whichDay: %i, sliderValue: %f",self.dayPart, self.whichDay, [self.slider value]);
+    //[self.slider setValue:self.dayPart+self.whichDay];
+    float currentVal = [self.slider value];
+    int midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
+    int updated = [[defaults objectForKey:@"lastUpdateTime"]intValue];
+    int displayedTime = updated+currentVal*3600;
+    NSDate *displayedTimeReal = [NSDate dateWithTimeIntervalSince1970:displayedTime];
     
-    /*if(self.dayPart == 24) {
-        // Set only once
-        if(!isWhichDaySet) {
-            // Moving back or forth
-            if(goesBack) {self.whichDay = self.whichDay-24;} else {self.whichDay = self.whichDay+24;}
-            isWhichDaySet = YES;
-        }
-        
-        if(self.whichDay == 144) {
-            self.whichDay = 0;
-        }
-        
-    } else {*/
-        
-        isWhichDaySet = NO;
-        
-        //[self.slider setValue:self.dayPart+self.whichDay];
-        float currentVal = [self.slider value];
-        int midnight = [[defaults objectForKey:@"lastMidnight"]intValue];
-        int updated = [[defaults objectForKey:@"lastUpdateTime"]intValue];
-        int displayedTime = updated+currentVal*3600;
-        NSDate *displayedTimeReal = [NSDate dateWithTimeIntervalSince1970:displayedTime];
-        
-        NSDateFormatter *format = [[NSDateFormatter alloc] init];
-        //[format setDateFormat:@"H:mm"];
-        [format setDateFormat:@"h a"];
-        
-        NSString *theDate = [format stringFromDate:displayedTimeReal];
-        
-        self.timeEarth.text = theDate;
-        self.displayTime.text = theDate;
-        
-        int currentInt = currentVal;
-        
-        if (currentInt != lastSelected) {
-            lastSelected = currentInt;
-            [self updateData];
-        }
-        
-        
-        day1.selected = FALSE;
-        day2.selected = FALSE;
-        day3.selected = FALSE;
-        day4.selected = FALSE;
-        day5.selected = FALSE;
-        day6.selected = FALSE;
-        
-        if(displayedTime > midnight+(5*24*3600)) {
-            day6.selected = TRUE;
-        } else if(displayedTime > midnight+(4*24*3600)) {
-            day5.selected = TRUE;
-        } else if(displayedTime > midnight+(3*24*3600)) {
-            day4.selected = TRUE;
-        } else if(displayedTime > midnight+(48*3600)) {
-            day3.selected = TRUE;
-        } else if (displayedTime > midnight+(24*3600)) {
-            day2.selected = TRUE;
-        } else{
-            day1.selected = TRUE;
-        }
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    //[format setDateFormat:@"H:mm"];
+    [format setDateFormat:@"h a"];
     
-    //}
+    NSString *theDate = [format stringFromDate:displayedTimeReal];
+    
+    self.timeEarth.text = theDate;
+    self.displayTime.text = theDate;
+    
+    int currentInt = currentVal;
+    
+    if (currentInt != lastSelected) {
+        lastSelected = currentInt;
+        [self updateData];
+    }
+    
+    
+    day1.selected = FALSE;
+    day2.selected = FALSE;
+    day3.selected = FALSE;
+    day4.selected = FALSE;
+    day5.selected = FALSE;
+    day6.selected = FALSE;
+    
+    if(displayedTime > midnight+(5*24*3600)) {
+        day6.selected = TRUE;
+    } else if(displayedTime > midnight+(4*24*3600)) {
+        day5.selected = TRUE;
+    } else if(displayedTime > midnight+(3*24*3600)) {
+        day4.selected = TRUE;
+    } else if(displayedTime > midnight+(48*3600)) {
+        day3.selected = TRUE;
+    } else if (displayedTime > midnight+(24*3600)) {
+        day2.selected = TRUE;
+    } else{
+        day1.selected = TRUE;
+    }
     
 }
 
@@ -525,28 +567,77 @@
 }
 
 
+/* ###################################################################### EARTH CONTROLLER STUFF ################################################ */
 
-/* ########################## EARTH SLIDER STUFF ############################ */
+// Set variables for day count
+int day = 0;
+bool daySet = NO;
 
-// Set variables
-NSString *up = @"sun";
-bool hasSwitched = NO;
-bool firstTouch = YES;
+- (void)handleTouchSun:(UIPanGestureRecognizer *)recognizer
+{
+    recognizer.cancelsTouchesInView=NO;
+    CGPoint location = [recognizer locationInView:self.view];
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+            break;
+        case UIGestureRecognizerStateChanged:
+        {   // Here goes stuff when you moving
+            CGPoint center = CGPointMake(160.0f, 373.0f);
+            float angle = AngleBetweenThreePoints(center, CGPointMake(160.0f, 220.0f), location);
+            // Rotate baseView which holds Sun and Moon
+            self.baseView.transform = CGAffineTransformMakeRotation(angle);
+            // counts up days (YES = sun is up)
+            [self daySet:YES withAngle:angle];
+        }
+            break;
+        case UIGestureRecognizerStateEnded:
+            break;
+        default:
+            break;
+    }
+    
+}
+
+- (void)handleTouchMoon:(UIPanGestureRecognizer *)recognizer
+{
+    recognizer.cancelsTouchesInView=NO;
+    CGPoint location = [recognizer locationInView:self.view];
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+            break;
+        case UIGestureRecognizerStateChanged:
+        {   // Here goes stuff when you moving
+            CGPoint center = CGPointMake(160.0f, 373.0f);
+            float angle = AngleBetweenThreePoints(center, CGPointMake(160.0f, 526.0f), location);
+            // Rotate baseView which holds Sun and Moon
+            self.baseView.transform = CGAffineTransformMakeRotation(angle);
+            // counts up days (NO = moon is up)
+            [self daySet:NO withAngle:angle];
+        }
+            break;
+        case UIGestureRecognizerStateEnded:
+            break;
+        default:
+            break;
+    }
+}
+
+// Get the angle
+double AngleBetweenThreePoints(CGPoint point1,CGPoint point2, CGPoint point3)
+{
+    CGPoint p1 = CGPointMake(point2.x - point1.x, -1*point2.y - point1.y *-1);
+    CGPoint p2 = CGPointMake(point3.x -point1.x, -1*point3.y -point1.y*-1);
+    double angle = atan2(p2.x*p1.y-p1.x*p2.x,p1.y*p2.y);
+    return angle;
+}
+
+// Set variables for defining if you go forth or back
 bool goesBack = NO;
 bool startAngleSet = NO;
 float startAngle;
 float nextAngle;
-bool isWhichDaySet = NO;
 
-// Touches ended method
--(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    if([up isEqual:@"sun"]) {
-        hasSwitched = NO;
-    } else {
-        hasSwitched = YES;
-    }
-}
+CGPoint touchStart;
 
 // Touches began method
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -560,53 +651,24 @@ bool isWhichDaySet = NO;
     float angle = -atan(xLeg / yLeg);
     //NSLog(@"angle: %f",angle);
     startAngle = angle;
-    
-    if(touchPoint.y < 373 && touchPoint.y > 200) {
-        if([up isEqual:@"sun"]) {
-            hasSwitched = NO;
-        } else {
-            hasSwitched = YES;
-        }
-    } else if(touchPoint.y > 373) {
-        if([up isEqual:@"sun"]) {
-            hasSwitched = YES;
-        } else {
-            hasSwitched = NO;
-        }
-    }
-    
-    // At first sun is changing to moon (don't know why, but hope this will solve it)
-    if(firstTouch) {
-        hasSwitched = NO;
-        firstTouch = NO;
-    }
+    touchStart = touchPoint;
 }
 
 // Degrees to radians definition
 #define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
 // Default angle (around 1.57)
-float defAngle = DEGREES_TO_RADIANS(90);
-// Define angle that divides angle into defined number of parts
-float divAngle;
-// angle + defAngle (for example -1.56 + 1.57 = 0.1)
-float finAngle;
-int partsNum;
-int dayPartFirst;
+float defAngle = DEGREES_TO_RADIANS(-90);
 
 // Touches moved method
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     CGPoint touchPoint = [touch locationInView:self.view];
-    float touchPY = touchPoint.y;
     
     CGPoint center = CGPointMake(160.0f, 373.0f);
-    float xLeg = (center.x - touchPoint.x);
-    float yLeg = (center.y - touchPoint.y);
-    float angle = -atan(xLeg / yLeg);
+    float angle = AngleBetweenThreePoints(center, CGPointMake(160.0f, 220.0f), touchPoint);
     
     // If it goes back in time or forward in time
-    //NSLog(@"Goes back: %d",goesBack);
     if(startAngleSet) {
         nextAngle = angle;
         startAngleSet = NO;
@@ -620,201 +682,32 @@ int dayPartFirst;
         startAngleSet = YES;
     }
     
-    // angle is long: 3.14; hours for half a day: 12
-    
-    // If we're touching above horizont
-    if(touchPY < 373 && touchPY > 200) {
-        
-        finAngle = angle+defAngle;
-        // If we're above 0 (fixes bug when on the beggining you get minus values)
-        if(finAngle > 0) {
-            
-            /* We're now able to divide half day into parts from 0 to defAngle*2, depends on how many parts 
-               we want the day to be divided. For example if sun is up for 12 hours we divide 
-               defAngle*2/12 and we've got 12 parts of half day. */
-            // Define number of parts
-            partsNum = 12;
-            dayPartFirst = 12;
-            // Define angle that divides angle into defined number of parts
-            divAngle = (defAngle*2)/partsNum;
-            NSLog(@"angle: %f, divAngle: %f",finAngle, divAngle);
-            
-            // Goes through if statemens as many as there are parts
-            for (int i = 0; i < partsNum; i++) {
-                if (finAngle >= i*divAngle && finAngle < (1+i)*divAngle) {
-                    NSLog(@"%f, %f",i*divAngle, (1+i)*divAngle);
-                    
-                    self.dayPart = i;
-                    [self.slider setValue:self.dayPart];
-                    [self sliderValueChanged:self.slider];
-                }
-            }
-            
-        }
-        
-        // If we're angle is less than 0
-        /*if(angle < 0) {
-            if (fabsf(angle) <= defAngle && fabsf(angle) >= defAngle/6*5) {
-                if(hasSwitched) {self.dayPart = 12;} else {self.dayPart = 0;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6*5 && fabsf(angle) >= defAngle/6*4) {
-                if(hasSwitched) {self.dayPart = 13;} else {self.dayPart = 1;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6*4 && fabsf(angle) >= defAngle/6*3) {
-                if(hasSwitched) {self.dayPart = 14;} else {self.dayPart = 2;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6*3 && fabsf(angle) >= defAngle/6*2) {
-                if(hasSwitched) {self.dayPart = 15;} else {self.dayPart = 3;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6*2 && fabsf(angle) >= defAngle/6*1) {
-                if(hasSwitched) {self.dayPart = 16;} else {self.dayPart = 4;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6 && fabsf(angle) >= 0) {
-                if(hasSwitched) {self.dayPart = 17;} else {self.dayPart = 5;}
-                [self sliderValueChanged:self.slider];
-            }
-        }
-        
-        // If we're angle is more than 0
-        if(angle > 0) {
-            if(fabsf(angle) > 0 && fabsf(angle) <= defAngle/6) {
-                if(hasSwitched) {self.dayPart = 18;} else {self.dayPart = 6;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6 && fabsf(angle) <= defAngle/6*2) {
-                if(hasSwitched) {self.dayPart = 19;} else {self.dayPart = 7;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6*2 && fabsf(angle) <= defAngle/6*3) {
-                if(hasSwitched) {self.dayPart = 20;} else {self.dayPart = 8;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6*3 && fabsf(angle) <= defAngle/6*4) {
-                if(hasSwitched) {self.dayPart = 21;} else {self.dayPart = 9;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6*4 && fabsf(angle) <= defAngle/6*5) {
-                if(hasSwitched) {self.dayPart = 22;} else {self.dayPart = 10;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6*5 && fabsf(angle) <= 1.45) {
-                NSLog(@"Last! angle: %f",angle);
-                if(hasSwitched) {self.dayPart = 23;} else {self.dayPart = 11;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.45 && fabsf(angle) <= defAngle) {
-                if(hasSwitched) {self.dayPart = 24;} else {self.dayPart = 12;}
-                [self sliderValueChanged:self.slider];
-            }
-        }*/
-        
-        // Rotate the UIView with image of sun or moon
-        self.baseView.transform = CGAffineTransformMakeRotation(angle);
-        
-        // If we ended touch and switched position of our fingers (from bottom to top)
-        if(hasSwitched) {
-            up = @"moon";
-        } else {
-            up = @"sun";
-        }
-        
-        if([up isEqual: @"sun"]) {
-            [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"sun1.png"]]];
-        } else {
-            [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"moon.png"]]];
-        }
-        
-    } else if(touchPY > 373) {
-        
-        finAngle = angle+defAngle;
-        // If we're above 0 (fixes bug when on the beggining you get minus values)
-        if(finAngle > 0) {
-            
-            /* We're now able to divide half day into parts from 0 to defAngle*2, depends on how many parts
-             we want the day to be divided. For example if sun is up for 12 hours we divide
-             defAngle*2/12 and we've got 12 parts of half day. */
-            // Define number of parts
-            partsNum = 12;
-            // Define angle that divides angle into defined number of parts
-            divAngle = (defAngle*2)/partsNum;
-            //NSLog(@"angle: %f, divAngle: %f",finAngle, divAngle);
-            
-            // Goes through if statemens as many as there are parts
-            for (int i = 0; i < partsNum; i++) {
-                if (finAngle >= i*divAngle && finAngle < (1+i)*divAngle) {
-                    NSLog(@"%f, %f",i*divAngle, (1+i)*divAngle);
-                    self.dayPart = i+dayPartFirst;
-                    [self.slider setValue:self.dayPart];
-                    [self sliderValueChanged:self.slider];
-                }
-            }
-            
-        }
-        
-        
-        // If we're angle is less than 0
-        /*if(angle < 0) {
-            if(fabsf(angle) <= defAngle && fabsf(angle) >= defAngle/6*5) {
-                if(!hasSwitched) {self.dayPart = 12;} else {self.dayPart = 0;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6*5 && fabsf(angle) >= defAngle/6*4) {
-                if(!hasSwitched) {self.dayPart = 13;} else {self.dayPart = 1;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6*4 && fabsf(angle) >= defAngle/6*3) {
-                if(!hasSwitched) {self.dayPart = 14;} else {self.dayPart = 2;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6*3 && fabsf(angle) >= defAngle/6*2) {
-                if(!hasSwitched) {self.dayPart = 15;} else {self.dayPart = 3;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6*2 && fabsf(angle) >= defAngle/6*1) {
-                if(!hasSwitched) {self.dayPart = 16;} else {self.dayPart = 4;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) < defAngle/6 && fabsf(angle) >= 0) {
-                if(!hasSwitched) {self.dayPart = 17;} else {self.dayPart = 5;}
-                [self sliderValueChanged:self.slider];
-            }
-        }
-        
-        // If we're angle is more than 0
-        if(angle > 0) {
-            if(fabsf(angle) > 0 && fabsf(angle) <= 1.57/6) {
-                if(!hasSwitched) {self.dayPart = 18;} else {self.dayPart = 6;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6 && fabsf(angle) <= defAngle/6*2) {
-                if(!hasSwitched) {self.dayPart = 19;} else {self.dayPart = 7;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6*2 && fabsf(angle) <= defAngle/6*3) {
-                if(!hasSwitched) {self.dayPart = 20;} else {self.dayPart = 8;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6*3 && fabsf(angle) <= defAngle/6*4) {
-                if(!hasSwitched) {self.dayPart = 21;} else {self.dayPart = 9;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6*4 && fabsf(angle) <= defAngle/6*5) {
-                if(!hasSwitched) {self.dayPart = 22;} else {self.dayPart = 10;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > defAngle/6*5 && fabsf(angle) <= 1.45) {
-                if(!hasSwitched) {self.dayPart = 23;} else {self.dayPart = 11;}
-                [self sliderValueChanged:self.slider];
-            } else if(fabsf(angle) > 1.45 && fabsf(angle) <= defAngle) {
-                if(!hasSwitched) {self.dayPart = 24;} else {self.dayPart = 12;}
-                [self sliderValueChanged:self.slider];
-            }
-        }*/
-        
-        // Rotate the UIView with image of sun or moon
-        self.baseView.transform = CGAffineTransformMakeRotation(angle);
-        
-        //NSLog(@"UP – hasSwitched:%d,up:%@",hasSwitched,up);
-        
-        if(hasSwitched) {
-            up = @"sun";
-        } else {
-            up = @"moon";
-        }
-        
-        if([up isEqual:@"moon"]) {
-            [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"moon.png"]]];
-        } else {
-            [self.baseImg setImage: [UIImage imageNamed:[NSString stringWithFormat:@"sun1.png"]]];
-        }
-
-    }
-    
 }
+
+// Counts days if sun is up or moon is up
+- (void)daySet:(bool)sun withAngle:(float)angle
+{
+    NSLog(@"day: %i, daySet: %d, angle: %f",day,daySet, angle);
+    if(angle <= -1.45 && angle >= defAngle) {
+        if(!daySet) {
+            if(goesBack) {
+                if(day > 0) {
+                    day--;
+                    daySet = YES;
+                }
+            } else {
+                if(day < 6) {
+                    day++;
+                    daySet = YES;
+                }
+            }
+        }
+    } else {
+        daySet = NO;
+    }
+}
+
+/* ###################################################################### END END EARTH CONTROLLER STUFF ################################################ */
 
 @end
 
