@@ -23,7 +23,7 @@
 {
     [super viewDidLoad];
     
-    /* ######### SETTING UP EARTH SLIDER ######### */
+    /* ######################################################## SETTING UP EARTH SLIDER ################################################ */
     
     // Add earth
     //UIImageView *earth = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 264, 155)];
@@ -89,7 +89,7 @@
     float targetRotation = -83.0;
     self.baseView.transform = CGAffineTransformMakeRotation(targetRotation / 180.0 * M_PI);
     
-    /* ######### END SETTING UP EARTH SLIDER ########## */
+    /* ####################################################### END SETTING UP EARTH SLIDER ############################################## */
     
 	// setting up day buttons width
     int rectX = 0;
@@ -319,10 +319,10 @@
         for(int j=0;j<24;j++) {
             if(sunRiseFin+j <= 24) {
                 [self.eachDay addObject:[NSNumber numberWithInt:sunRiseFin+j]];
-                NSLog(@"eachDay: %@",[self.eachDay objectAtIndex:j]);
+                //NSLog(@"eachDay: %@",[self.eachDay objectAtIndex:j]);
             } else {
                 [self.eachDay addObject:[NSNumber numberWithInt:sunRiseFin+j-24]];
-                NSLog(@"eachDay: %@",[self.eachDay objectAtIndex:j]);
+                //NSLog(@"eachDay: %@",[self.eachDay objectAtIndex:j]);
             }
         }
     }
@@ -353,6 +353,9 @@
         
         [self displayData:&index :@"daily"];
     }
+    
+    // initialize the earth controller to its basic position depending on day 0 long
+    [self earthControllerInit];
 
 }
 
@@ -573,6 +576,88 @@
 int day = 0;
 bool daySet = NO;
 
+// Set variables for day time
+int sunRiseFin;
+int sunSetFin;
+int currentTimeFin;
+int dayLong;
+int nightLong;
+bool isDayOrNight;
+float day0AngleBack;
+
+- (void)earthControllerInit
+{
+    // Get sunRise and sunSet
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"H"];
+    int sunRise;
+    int sunSet;
+    int currentTime;
+    NSDate *sunRiseReal;
+    NSDate *sunSetReal;
+    NSDate *currentTimeReal;
+    
+    //int updatedLast = [[defaults objectForKey:@"lastUpdateTime"] intValue];
+    currentTime = [[NSNumber numberWithInt:[self getUnixTime:[NSDate date]]] intValue];
+    currentTimeReal = [NSDate dateWithTimeIntervalSince1970:currentTime];
+    currentTimeFin = [[format stringFromDate:currentTimeReal] intValue];
+    NSLog(@"currentTime: %i",currentTimeFin);
+
+    sunRise = [[[week objectAtIndex:0] valueForKey:@"sunriseTime"] intValue];
+    sunRiseReal = [NSDate dateWithTimeIntervalSince1970:sunRise];
+    sunRiseFin = [[format stringFromDate:sunRiseReal] intValue];
+    sunSet = [[[week objectAtIndex:0] valueForKey:@"sunsetTime"] intValue];
+    sunSetReal = [NSDate dateWithTimeIntervalSince1970:sunSet];
+    sunSetFin = [[format stringFromDate:sunSetReal] intValue];
+    NSLog(@"sunRise: %i",sunRiseFin);
+    NSLog(@"sunSet: %i",sunSetFin);
+    dayLong = sunSetFin-sunRiseFin;
+    nightLong = 24 - dayLong;
+    NSLog(@"dayLong: %i, nightLong: %i",dayLong,nightLong);
+    
+    // Is it night or day?
+    if(currentTimeFin > sunRiseFin && currentTimeFin < sunSetFin) {
+        NSLog(@"It's daytime! = YES");
+        isDayOrNight = YES;
+        [self setAngleForEarthControllerForLong:dayLong withAngleMultiple:currentTimeFin-sunRiseFin];
+    } else {
+        NSLog(@"It's nighttime! = NO");
+        isDayOrNight = NO;
+        if(currentTimeFin >= 0 && currentTimeFin <= sunRiseFin) {
+            [self setAngleForEarthControllerForLong:nightLong withAngleMultiple:currentTimeFin-sunSetFin+24];
+        } else {
+            [self setAngleForEarthControllerForLong:nightLong withAngleMultiple:currentTimeFin-sunSetFin];
+        }
+    }
+}
+
+- (void)setAngleForEarthControllerForLong:(int)dayNightLong withAngleMultiple:(int)angMult
+{
+    float divAngle = (-defAngle*2)/dayNightLong;
+    if(isDayOrNight) {
+        day0AngleBack = divAngle*angMult;
+        self.baseView.transform = CGAffineTransformMakeRotation(day0AngleBack);
+    } else {
+        day0AngleBack = divAngle*angMult+(-defAngle);
+        self.baseView.transform = CGAffineTransformMakeRotation(day0AngleBack);
+    }
+    NSLog(@"angMult: %i, divAngle*angMult: %f, divAngle: %f",angMult,day0AngleBack,divAngle);
+    
+}
+
+- (void)getAngleAndSetTimeWithAngle:(float)angle
+{
+    if(day == 0) {
+
+    } else if(day == 1) {
+    
+    } else if(day == 2) {
+        
+    } else if(day == 3) {
+        
+    }
+}
+
 - (void)handleTouchSun:(UIPanGestureRecognizer *)recognizer
 {
     recognizer.cancelsTouchesInView=NO;
@@ -585,7 +670,16 @@ bool daySet = NO;
             CGPoint center = CGPointMake(160.0f, 373.0f);
             float angle = AngleBetweenThreePoints(center, CGPointMake(160.0f, 220.0f), location);
             // Rotate baseView which holds Sun and Moon
-            self.baseView.transform = CGAffineTransformMakeRotation(angle);
+            // If we're at starting point, we cannot go back than what's the current time
+            if(day == 0) {
+                if(!(angle < day0AngleBack && angle > defAngle)) {
+                    self.baseView.transform = CGAffineTransformMakeRotation(angle);
+                } else {
+                    self.baseView.transform = CGAffineTransformMakeRotation(day0AngleBack);
+                }
+            } else {
+                self.baseView.transform = CGAffineTransformMakeRotation(angle);
+            }
             // counts up days (YES = sun is up)
             [self daySet:YES withAngle:angle];
         }
@@ -610,7 +704,16 @@ bool daySet = NO;
             CGPoint center = CGPointMake(160.0f, 373.0f);
             float angle = AngleBetweenThreePoints(center, CGPointMake(160.0f, 526.0f), location);
             // Rotate baseView which holds Sun and Moon
-            self.baseView.transform = CGAffineTransformMakeRotation(angle);
+            // If we're at starting point, we cannot go back than what's the current time
+            if(day == 0) {
+                if(!(angle < day0AngleBack && angle > defAngle)) {
+                    self.baseView.transform = CGAffineTransformMakeRotation(angle);
+                } else {
+                    self.baseView.transform = CGAffineTransformMakeRotation(day0AngleBack);
+                }
+            } else {
+                self.baseView.transform = CGAffineTransformMakeRotation(angle);
+            }
             // counts up days (NO = moon is up)
             [self daySet:NO withAngle:angle];
         }
@@ -639,6 +742,11 @@ float nextAngle;
 
 CGPoint touchStart;
 
+// Degrees to radians definition
+#define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
+// Default angle (around 1.57)
+float defAngle = DEGREES_TO_RADIANS(-90);
+
 // Touches began method
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -653,11 +761,6 @@ CGPoint touchStart;
     startAngle = angle;
     touchStart = touchPoint;
 }
-
-// Degrees to radians definition
-#define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
-// Default angle (around 1.57)
-float defAngle = DEGREES_TO_RADIANS(-90);
 
 // Touches moved method
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -687,6 +790,7 @@ float defAngle = DEGREES_TO_RADIANS(-90);
 // Counts days if sun is up or moon is up
 - (void)daySet:(bool)sun withAngle:(float)angle
 {
+    [self getAngleAndSetTimeWithAngle:angle];
     NSLog(@"day: %i, daySet: %d, angle: %f",day,daySet, angle);
     if(angle <= -1.45 && angle >= defAngle) {
         if(!daySet) {
