@@ -537,7 +537,7 @@
     // Kick off your CLLocationManager
     [locationManager startUpdatingLocation];
     
-    NSLog(@"aha");
+    NSLog(@"Refresh tapped!");
 }
 
 - (void)didReceiveMemoryWarning
@@ -635,10 +635,10 @@ float day0AngleBack;
 {
     float divAngle = (-defAngle*2)/dayNightLong;
     if(isDayOrNight) {
-        day0AngleBack = divAngle*angMult;
+        day0AngleBack = defAngle+divAngle*angMult;
         self.baseView.transform = CGAffineTransformMakeRotation(day0AngleBack);
     } else {
-        day0AngleBack = divAngle*angMult+(-defAngle);
+        day0AngleBack = defAngle+divAngle*angMult+(-defAngle)*2;
         self.baseView.transform = CGAffineTransformMakeRotation(day0AngleBack);
     }
     NSLog(@"angMult: %i, divAngle*angMult: %f, divAngle: %f",angMult,day0AngleBack,divAngle);
