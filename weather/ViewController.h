@@ -13,14 +13,18 @@
 #import "MenuViewController.h"
 
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UIGestureRecognizerDelegate>
 
 // EARTH slider
 @property (strong, nonatomic) UIView *baseView;
+@property (strong, nonatomic) UIView *hideView;
 @property (strong, nonatomic) UIImageView *baseImg;
+@property (strong, nonatomic) UIImageView *baseMoon;
 @property (strong, nonatomic) UILabel *timeEarth;
-@property int dayPart;
-@property int whichDay;
+@property (strong, nonatomic) UIImageView *earth;
+@property (strong, nonatomic) UIImageView *earthAlone;
+@property int dayLong;
+@property NSMutableArray *eachDay;
 
 // custom view for opening menu (only at top half of the screen)
 @property (strong, nonatomic) IBOutlet UIView *menuOpenView;
