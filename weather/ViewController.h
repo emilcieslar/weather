@@ -15,6 +15,11 @@
 
 @interface ViewController : UIViewController <UIGestureRecognizerDelegate>
 
+//activity indicator
+
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loader;
+
+
 // EARTH slider
 @property (strong, nonatomic) UIView *baseView;
 @property (strong, nonatomic) UIView *hideView;

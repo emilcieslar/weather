@@ -15,7 +15,7 @@
 
 @implementation ViewController
 
-@synthesize locationManager, currentLocation, icona, icon, week, dayNum, weekdays, finalTheDay, day6,day5,day4,day3,day2,day1, displayTime, json, daily, lastSelected, currentMidnight, humidityText,windText,cloudsText,tempText, sumText, slider, defaults;
+@synthesize locationManager, currentLocation, icona, icon, week, dayNum, weekdays, finalTheDay, day6,day5,day4,day3,day2,day1, displayTime, json, daily, lastSelected, currentMidnight, humidityText,windText,cloudsText,tempText, sumText, slider, defaults, loader;
 
 //when app is loaded
 
@@ -363,6 +363,8 @@
     
     // initialize the earth controller to its basic position depending on day 0 long
     [self earthControllerInit];
+    [self.refresData setHidden:NO];
+    [loader stopAnimating];
 
 }
 
@@ -545,8 +547,8 @@
 - (IBAction)refresh:(id)sender {
     // Kick off your CLLocationManager
     [locationManager startUpdatingLocation];
-    
-    NSLog(@"Refresh tapped!");
+    [self.refresData setHidden:YES];
+    [loader startAnimating];
 }
 
 - (void)didReceiveMemoryWarning
