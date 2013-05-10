@@ -266,7 +266,7 @@
                           JSONObjectWithData:responseData //1
                           options:kNilOptions
                           error:&error];
-    NSLog(@"fetchedData: %@",json);
+    //NSLog(@"fetchedData: %@",json);
     
     
     week = [[json objectForKey:@"daily"] valueForKey:@"data"];
