@@ -267,7 +267,12 @@
     NSNumber *currentTime = [NSNumber numberWithInt:[self getUnixTime:[NSDate date]]];
     NSDate *today = [self dateAtBeginningOfDayForDate:[NSDate date]];
     NSNumber *midnight = [NSNumber numberWithInt:[self getUnixTime:today]];
-
+    
+    [defaults setObject:nil forKey:@"lastUpdateTime"];
+    [defaults setObject:nil forKey:@"lastMidnight"];
+    [defaults setObject:nil forKey:@"lastData"];
+    [defaults synchronize];
+    
     [defaults setObject:currentTime forKey:@"lastUpdateTime"];
     [defaults setObject:midnight forKey:@"lastMidnight"];
     [defaults setObject:dataURL forKey:@"lastData"];
@@ -275,8 +280,8 @@
     
     NSLog(@"Loaded new data");
     
+    [self getDate:today];
     [self fetchedData:dataURL];
-    
 }
 
 //parsing json
@@ -451,8 +456,10 @@
     
     //check current day number
     int count = 0;
+    dayNum = 0;
     while (![dayOfWeek isEqualToString:[weekdays objectAtIndex:count]]) {
-        dayNum = count;
+        dayNum = count+1;
+        NSLog(@"%@ %i",[weekdays objectAtIndex:count], count);
         count++;
     }
     
