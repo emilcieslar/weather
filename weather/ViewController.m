@@ -15,7 +15,7 @@
 
 @implementation ViewController
 
-@synthesize locationManager, currentLocation, icona, icon, week, dayNum, weekdays, finalTheDay, day6,day5,day4,day3,day2,day1, displayTime, json, daily, lastSelected, currentMidnight, humidityText,windText,cloudsText,tempText, sumText, slider, defaults;
+@synthesize locationManager, currentLocation, icona, icon, week, dayNum, weekdays, finalTheDay, day6,day5,day4,day3,day2,day1, displayTime, json, daily, lastSelected, currentMidnight, humidityText,windText,cloudsText,tempText, sumText, slider, defaults, loader;
 
 //when app is loaded
 
@@ -267,7 +267,12 @@
     NSNumber *currentTime = [NSNumber numberWithInt:[self getUnixTime:[NSDate date]]];
     NSDate *today = [self dateAtBeginningOfDayForDate:[NSDate date]];
     NSNumber *midnight = [NSNumber numberWithInt:[self getUnixTime:today]];
-
+    
+    [defaults setObject:nil forKey:@"lastUpdateTime"];
+    [defaults setObject:nil forKey:@"lastMidnight"];
+    [defaults setObject:nil forKey:@"lastData"];
+    [defaults synchronize];
+    
     [defaults setObject:currentTime forKey:@"lastUpdateTime"];
     [defaults setObject:midnight forKey:@"lastMidnight"];
     [defaults setObject:dataURL forKey:@"lastData"];
@@ -275,8 +280,8 @@
     
     NSLog(@"Loaded new data");
     
+    [self getDate:today];
     [self fetchedData:dataURL];
-    
 }
 
 //parsing json
@@ -289,6 +294,8 @@
                           JSONObjectWithData:responseData //1
                           options:kNilOptions
                           error:&error];
+    //NSLog(@"fetchedData: %@",json);
+    
     
     week = [[json objectForKey:@"daily"] valueForKey:@"data"];
     daily = [[json objectForKey:@"hourly"] valueForKey:@"data"];
@@ -356,6 +363,8 @@
     
     // initialize the earth controller to its basic position depending on day 0 long
     [self earthControllerInit];
+    [self.refresData setHidden:NO];
+    [loader stopAnimating];
 
 }
 
@@ -449,8 +458,10 @@
     
     //check current day number
     int count = 0;
+    dayNum = 0;
     while (![dayOfWeek isEqualToString:[weekdays objectAtIndex:count]]) {
-        dayNum = count;
+        dayNum = count+1;
+        NSLog(@"%@ %i",[weekdays objectAtIndex:count], count);
         count++;
     }
     
@@ -536,8 +547,8 @@
 - (IBAction)refresh:(id)sender {
     // Kick off your CLLocationManager
     [locationManager startUpdatingLocation];
-    
-    NSLog(@"Refresh tapped!");
+    [self.refresData setHidden:YES];
+    [loader startAnimating];
 }
 
 - (void)didReceiveMemoryWarning

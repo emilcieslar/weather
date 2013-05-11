@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="zOr-RT-sgA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C3006" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="zOr-RT-sgA">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -250,6 +250,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="white" id="Qov-5o-aak">
+                                <rect key="frame" x="288" y="10" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.090196078431372548" green="0.090196078431372548" blue="0.090196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -266,6 +270,7 @@
                         <outlet property="displayTime" destination="M3p-Gc-fTR" id="QFl-Vb-Wxl"/>
                         <outlet property="icon" destination="tEg-ON-UZn" id="Q7M-jd-N2T"/>
                         <outlet property="icona" destination="tEg-ON-UZn" id="QO4-Pa-Lue"/>
+                        <outlet property="loader" destination="Qov-5o-aak" id="mmw-34-mS3"/>
                         <outlet property="location" destination="GcU-uA-ZeU" id="Tbw-JS-Nxb"/>
                         <outlet property="menuOpenView" destination="IyA-NY-Fq5" id="Lbe-Mp-c8C"/>
                         <outlet property="menuView" destination="40M-ni-bKk" id="buJ-ph-yq3"/>
@@ -355,6 +360,7 @@
                 <relationship kind="outlet" name="day6" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="displayTime" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="icona" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="loader" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="location" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="menuOpenView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="menuView" candidateClass="UIView"/>
