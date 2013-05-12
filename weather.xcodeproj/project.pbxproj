@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A07EDE2170F298500E40D7E /* customCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A07EDE1170F298500E40D7E /* customCell.xib */; };
-		3A07EDE5170F2D9C00E40D7E /* customCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A07EDE4170F2D9C00E40D7E /* customCell.m */; };
+		3A6FE38E173E6D2B00F65E13 /* customCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A6FE38D173E6D2B00F65E13 /* customCell.xib */; };
+		3A6FE391173E6DEF00F65E13 /* customCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6FE390173E6DEF00F65E13 /* customCell.m */; };
 		3A8B926C17359982008D6C37 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8B926A17359982008D6C37 /* icon.png */; };
 		3A8B926D17359982008D6C37 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8B926B17359982008D6C37 /* icon@2x.png */; };
 		3A8B92BE1735CCED008D6C37 /* clear-night.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8B92891735CBF9008D6C37 /* clear-night.png */; };
@@ -82,9 +82,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3A07EDE1170F298500E40D7E /* customCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = customCell.xib; sourceTree = "<group>"; };
-		3A07EDE3170F2D9C00E40D7E /* customCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = customCell.h; sourceTree = "<group>"; };
-		3A07EDE4170F2D9C00E40D7E /* customCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = customCell.m; sourceTree = "<group>"; };
+		3A6FE38D173E6D2B00F65E13 /* customCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = customCell.xib; sourceTree = "<group>"; };
+		3A6FE38F173E6DEF00F65E13 /* customCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = customCell.h; sourceTree = "<group>"; };
+		3A6FE390173E6DEF00F65E13 /* customCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = customCell.m; sourceTree = "<group>"; };
 		3A8B926A17359982008D6C37 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		3A8B926B17359982008D6C37 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		3A8B92891735CBF9008D6C37 /* clear-night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clear-night.png"; sourceTree = "<group>"; };
@@ -185,9 +185,9 @@
 		3A7D8294172DBE7200CA0651 /* cell */ = {
 			isa = PBXGroup;
 			children = (
-				3A07EDE1170F298500E40D7E /* customCell.xib */,
-				3A07EDE3170F2D9C00E40D7E /* customCell.h */,
-				3A07EDE4170F2D9C00E40D7E /* customCell.m */,
+				3A6FE38D173E6D2B00F65E13 /* customCell.xib */,
+				3A6FE38F173E6DEF00F65E13 /* customCell.h */,
+				3A6FE390173E6DEF00F65E13 /* customCell.m */,
 			);
 			name = cell;
 			sourceTree = "<group>";
@@ -379,7 +379,6 @@
 			files = (
 				3A8D17DD170DFCB70042C50D /* InfoPlist.strings in Resources */,
 				3A8D17EC170DFCB70042C50D /* MainStoryboard.storyboard in Resources */,
-				3A07EDE2170F298500E40D7E /* customCell.xib in Resources */,
 				CEB4712C1734215A002C1BEB /* locations.png in Resources */,
 				CEB4712D1734215A002C1BEB /* locations@2x.png in Resources */,
 				CEB4712E1734215A002C1BEB /* refresh.png in Resources */,
@@ -436,6 +435,7 @@
 				3A8B92D61735CCED008D6C37 /* wind.png in Resources */,
 				3A8B92D71735CCED008D6C37 /* wind@2x.png in Resources */,
 				CEC0138B17384882001ECA10 /* moon.png in Resources */,
+				3A6FE38E173E6D2B00F65E13 /* customCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,11 +449,11 @@
 				3A8D17DF170DFCB70042C50D /* main.m in Sources */,
 				3A8D17E3170DFCB70042C50D /* AppDelegate.m in Sources */,
 				3A8D17EF170DFCB70042C50D /* ViewController.m in Sources */,
-				3A07EDE5170F2D9C00E40D7E /* customCell.m in Sources */,
 				3AB8B7E21730F3FA008546DB /* InitialViewController.m in Sources */,
 				3AB8B7E31730F6F1008546DB /* ECSlidingViewController.m in Sources */,
 				3AB8B7E41730F6F6008546DB /* UIImage+ImageWithUIView.m in Sources */,
 				3AB8B7E71730F9E1008546DB /* MenuViewController.m in Sources */,
+				3A6FE391173E6DEF00F65E13 /* customCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

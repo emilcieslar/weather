@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
 #import "ECSlidingViewController.h"
+#import "customCell.h"
 
 @interface MenuViewController : UIViewController <UITextFieldDelegate>
 
@@ -20,5 +21,8 @@
 @property (strong, nonatomic) IBOutlet UISegmentedControl *unitSwitchP;
 // unitSwitchP action
 - (IBAction)unitSwitchChanged:(id)sender;
+
+//data for locations
+@property (strong, nonatomic) NSMutableArray *locationData;
 
 @end

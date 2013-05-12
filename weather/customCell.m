@@ -2,7 +2,7 @@
 //  customCell.m
 //  weather
 //
-//  Created by Adam Hayek on 4/5/13.
+//  Created by Adam Hayek on 5/11/13.
 //  Copyright (c) 2013 Adam Hayek. All rights reserved.
 //
 
@@ -10,9 +10,7 @@
 
 @implementation customCell
 
-@synthesize tempLabel = _nameLabel;
-@synthesize descLabel = _prepTimeLabel;
-@synthesize thumbnailImageView = _thumbnailImageView;
+@synthesize locationLabel = _locationLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

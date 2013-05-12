@@ -45,11 +45,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/ViewController.m"
-         timestampString = "389913588.213726"
+         timestampString = "389977973.674463"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "170"
-         endingLineNumber = "170"
+         startingLineNumber = "174"
+         endingLineNumber = "174"
          landmarkName = "-applicationDidBecomeActive:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -58,11 +58,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/ViewController.m"
-         timestampString = "389913588.213726"
+         timestampString = "390061353.321383"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "313"
-         endingLineNumber = "313"
+         startingLineNumber = "325"
+         endingLineNumber = "325"
          landmarkName = "-fetchedData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -71,12 +71,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/MenuViewController.m"
-         timestampString = "389196425.778343"
+         timestampString = "389965267.677992"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "45"
-         endingLineNumber = "45"
+         startingLineNumber = "46"
+         endingLineNumber = "46"
          landmarkName = "-viewDidLoad"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "weather/ViewController.m"
+         timestampString = "390061632.054219"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "608"
+         endingLineNumber = "608"
+         landmarkName = "-locationChanged"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

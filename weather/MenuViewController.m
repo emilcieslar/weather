@@ -10,6 +10,7 @@
 
 @implementation MenuViewController
 
+@synthesize locationData;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.addLocation) {
@@ -72,11 +73,74 @@
         self.unitSwitchP.selectedSegmentIndex = 1;
     }
     
+    //add something to the array
+    
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"PLIST_locations.plist"];
+	
+    if ([[NSFileManager defaultManager] fileExistsAtPath:plistPath]){
+		locationData = [NSMutableArray arrayWithContentsOfFile: plistPath];
+        NSLog(@"it loaded saved data from plist");
+	} else {
+		locationData = [[NSMutableArray alloc] init];
+        
+        NSMutableDictionary *current = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"Current location",@"location", @"49.229257", @"lat", @"17.663269", @"lng", nil];
+        
+        NSMutableDictionary *location = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"Praha, Czech republic",@"location", @"50.068599", @"lat", @"14.438782", @"lng", nil];
+        
+        [locationData addObject:current];
+        [locationData addObject:location];
+        
+	}
+    
+    [self writeLocationsToFile];
+    
+}
+
+- (void)writeLocationsToFile {
+	
+	NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"PLIST_locations.plist"];
+	
+	[locationData writeToFile:plistPath atomically:YES];
+	
+	NSLog(@"[INFO] PLIST: Document was written to disk!");
+	
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return [locationData count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"customCell";
+    
+    customCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"customCell" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+    }
+    
+    // Configure the cell...
+    cell.locationLabel.text = [[locationData objectAtIndex:indexPath.row] objectForKey:@"location"];
+    
+    return cell;
+}
+
+//select location
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *indexNumber = [NSString stringWithFormat:@"%i",indexPath.row];
+    [defaults setObject:indexNumber forKey:@"selectedLocation"];
+    
+    [self.slidingViewController resetTopView];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"locationNotification" object: nil];
+    
 }
 
 // unitSwitch changed action

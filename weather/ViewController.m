@@ -23,7 +23,7 @@
 {
     [super viewDidLoad];
     
-    /* ######################################################## SETTING UP EARTH SLIDER ################################################ */
+    /* ############################################ SETTING UP EARTH SLIDER ################################################ */
     
     // Add earth
     //UIImageView *earth = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 264, 155)];
@@ -89,7 +89,7 @@
     float targetRotation = -83.0;
     self.baseView.transform = CGAffineTransformMakeRotation(targetRotation / 180.0 * M_PI);
     
-    /* ####################################################### END SETTING UP EARTH SLIDER ############################################## */
+    /* ########################################### END SETTING UP EARTH SLIDER ############################################## */
     
 	// setting up day buttons width
     int rectX = 0;
@@ -121,6 +121,9 @@
     //update data if users chooses °C or °F
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(updateData) name:@"dealNotification" object: nil];
     
+    //location changed
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(locationChanged) name:@"locationNotification" object: nil];
+    
     //init user defaults
     defaults = [NSUserDefaults standardUserDefaults];
     
@@ -145,6 +148,7 @@
     
     // Add the pan gesture to allow sliding
     [self.menuOpenView addGestureRecognizer:self.slidingViewController.panGesture];
+    //[self.view addGestureRecognizer:self.slidingViewController.panGesture];
 }
 
 //application did become active
@@ -190,7 +194,10 @@
     self.currentLocation = newLocation;
     [self geolocateAddress:newLocation];
     //NSLog(@"updated");
-    [self getJSON];
+    NSString *latitude = [NSString stringWithFormat:@"%f", locationManager.location.coordinate.latitude];
+    NSString *longitude = [NSString stringWithFormat:@"%f", locationManager.location.coordinate.longitude];
+    
+    [self getJSON:latitude :longitude];
     
 }
 
@@ -251,15 +258,11 @@
 }
 
 //getting json from weather api
-- (void) getJSON
-{
-    
-    //current lat and lng
-    NSObject *latitude = [NSString stringWithFormat:@"%f", locationManager.location.coordinate.latitude];
-    NSObject *longitude = [NSString stringWithFormat:@"%f", locationManager.location.coordinate.longitude];
+- (void) getJSON:(NSString *) latitude :(NSString *)longtitude{
+
     
     //send the HTTP request
-    NSString *URL = [NSString stringWithFormat:@"https://api.forecast.io/forecast/c7c86b43186eb3f662a15dbc61a93d32/%@,%@", latitude, longitude];
+    NSString *URL = [NSString stringWithFormat:@"https://api.forecast.io/forecast/c7c86b43186eb3f662a15dbc61a93d32/%@,%@", latitude, longtitude];
     NSURL *fullURL = [NSURL URLWithString:URL];
     NSError *error = nil;
     NSData *dataURL = [NSData dataWithContentsOfURL:fullURL options:0 error:&error];
@@ -268,20 +271,29 @@
     NSDate *today = [self dateAtBeginningOfDayForDate:[NSDate date]];
     NSNumber *midnight = [NSNumber numberWithInt:[self getUnixTime:today]];
     
-    [defaults setObject:nil forKey:@"lastUpdateTime"];
-    [defaults setObject:nil forKey:@"lastMidnight"];
-    [defaults setObject:nil forKey:@"lastData"];
-    [defaults synchronize];
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"PLIST_locations.plist"];
+	
+    NSMutableArray *locationData = [NSMutableArray arrayWithContentsOfFile: plistPath];
     
-    [defaults setObject:currentTime forKey:@"lastUpdateTime"];
-    [defaults setObject:midnight forKey:@"lastMidnight"];
-    [defaults setObject:dataURL forKey:@"lastData"];
-    [defaults synchronize];
+    int selected = [[defaults objectForKey:@"selectedLocation"] integerValue];
     
-    NSLog(@"Loaded new data");
+    [[locationData objectAtIndex:selected] setObject:currentTime forKey:@"lastUpdate"];
+    [[locationData objectAtIndex:selected] setObject:midnight forKey:@"lastMidnight"];
+    [[locationData objectAtIndex:selected] setObject:dataURL forKey:@"lastData"];
+    
+    [self writeLocationsToFile:locationData];
+    
+    NSLog(@"New Data");
     
     [self getDate:today];
-    [self fetchedData:dataURL];
+    
+    if (dataURL != nil) {
+       [self fetchedData:dataURL];
+    } else {
+        NSLog(@"wtf");
+    }
+    
 }
 
 //parsing json
@@ -580,8 +592,48 @@
     [self sliderValueChanged:slider];
 }
 
+- (void)locationChanged{
+    
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"PLIST_locations.plist"];
+	
+    NSMutableArray *locationData = [NSMutableArray arrayWithContentsOfFile: plistPath];
+    
+    int selected = [[defaults objectForKey:@"selectedLocation"] integerValue];
+    
+    NSString *latitude = [[locationData objectAtIndex:selected] objectForKey:@"lat"];
+    NSString *longitude = [[locationData objectAtIndex:selected] objectForKey:@"lng"];
+    
+    int lastUpdate = [[[locationData objectAtIndex:selected] objectForKey:@"lastUpdate"] intValue];
+    int now = [self getUnixTime:[NSDate date]];
+    
+    self.location.text = [[locationData objectAtIndex:selected] objectForKey:@"location"];
+    
+    NSLog(@"%i, %i", lastUpdate, now);
+    
+    if (lastUpdate+3600*10 < now) {
+        [self getJSON:latitude :longitude];
+    } else {
+        [self fetchedData:[[locationData objectAtIndex:selected] objectForKey:@"lastData"]];
+        NSLog(@"picked the last data");
+    }
+    
+}
 
-/* ###################################################################### EARTH CONTROLLER STUFF ################################################ */
+//update data
+
+- (void)writeLocationsToFile:(NSArray *)locationData {
+	
+	NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"PLIST_locations.plist"];
+	
+	[locationData writeToFile:plistPath atomically:YES];
+	
+	NSLog(@"[INFO] PLIST: Document was written to disk!");
+	
+}
+
+/* ################################################ EARTH CONTROLLER STUFF ################################################ */
 
 // Set variables for day count
 int day = 0;
