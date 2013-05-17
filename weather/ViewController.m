@@ -154,27 +154,58 @@
 //application did become active
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    //call the function to get the data and current date
-    int timeNow = [self getUnixTime:[NSDate date]];
     
-    int lastUpdate = [[defaults objectForKey:@"lastUpdateTime"]intValue];
-    NSData *lastData = [defaults objectForKey:@"lastData"];
+    //call the function to get the data and current dat
+    
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"PLIST_locations.plist"];
+	
+    NSMutableArray *locationData = [NSMutableArray arrayWithContentsOfFile: plistPath];
+    
+    if ([defaults objectForKey:@"selectedLocation"] == nil) {
+        [defaults setObject:@"0" forKey:@"selectedLocation"];
+    }
+    
+    int selected = [[defaults objectForKey:@"selectedLocation"] integerValue];
+    
+    int timeNow = [self getUnixTime:[NSDate date]];
+    int lastUpdate = [[[locationData objectAtIndex:selected] objectForKey:@"lastUpdate"] integerValue];
+    
+    NSData *lastData = [[locationData objectAtIndex:selected] objectForKey:@"lastData"];
     
     NSDate *lastUpdateDate = [NSDate dateWithTimeIntervalSince1970:lastUpdate];
     //display days in buttons
     [self getDate:lastUpdateDate];
     
-    NSString *lastAddress = [defaults objectForKey:@"lastAddress"];
+    //lat lng
     
-    if (timeNow > lastUpdate+36000 || lastData == nil) {
-        [locationManager startUpdatingLocation];
-    } else {
-        NSLog(@"Your data are up to date!");
-        [self fetchedData:lastData];
-        if (lastAddress ==  NULL) {
+    NSString *lat = [[locationData objectAtIndex:selected] objectForKey:@"lat"];
+    NSString *lng = [[locationData objectAtIndex:selected] objectForKey:@"lng"];
+    
+    NSString *lastAddress = [[locationData objectAtIndex:selected] objectForKey:@"location"];
+    NSString *lastName = [[locationData objectAtIndex:selected] objectForKey:@"name"];
+    
+    NSLog(@"%@", lastName);
+    
+    if (selected == 0) {
+        if (timeNow > lastUpdate+36000 || lastData == nil) {
             [locationManager startUpdatingLocation];
+        } else {
+            NSLog(@"Your data are up to date!");
+            [self fetchedData:lastData];
+            if (lastAddress ==  NULL) {
+                [locationManager startUpdatingLocation];
+            }
+            self.location.text = lastName;
         }
-        self.location.text = lastAddress;
+    } else {
+        if (timeNow > lastUpdate+36000 || lastData == nil) {
+            [self getJSON:lat :lng];
+        } else {
+            NSLog(@"Your data are up to date!");
+            [self fetchedData:lastData];
+            self.location.text = lastAddress;
+        }
     }
     
 }
@@ -249,8 +280,15 @@
         
         //display the current city nad state
         NSString *lastAddress = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.country];
-        [defaults setObject:lastAddress forKey:@"lastAddress"];
-        [defaults synchronize];
+        
+        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"PLIST_locations.plist"];
+        
+        NSMutableArray *locationData = [NSMutableArray arrayWithContentsOfFile: plistPath];
+        
+        [[locationData objectAtIndex:0] setObject:lastAddress forKey:@"name"];
+        
+        [self writeLocationsToFile:locationData];
         
         self.location.text = lastAddress;
         
@@ -350,7 +388,14 @@
 }
 
 - (void)updateData{
-    int lastUpdate = [[defaults objectForKey:@"lastUpdateTime"]intValue];
+    
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"PLIST_locations.plist"];
+	
+    NSMutableArray *locationData = [NSMutableArray arrayWithContentsOfFile: plistPath];
+    
+    int selected = [[defaults objectForKey:@"selectedLocation"] integerValue];
+    int lastUpdate = [[[locationData objectAtIndex:selected] objectForKey:@"lastUpdate"] integerValue];
     int currentTime = [[NSNumber numberWithInt:[self getUnixTime:[NSDate date]]] integerValue]+lastSelected*3600;
     
     NSUInteger index = (currentTime - lastUpdate)/3600;
@@ -614,6 +659,10 @@
 
 - (void)locationChanged{
     
+    [self.slidingViewController resetTopView];
+    
+    [loader startAnimating];
+    
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"PLIST_locations.plist"];
 	
@@ -627,10 +676,11 @@
     int lastUpdate = [[[locationData objectAtIndex:selected] objectForKey:@"lastUpdate"] intValue];
     int now = [self getUnixTime:[NSDate date]];
     
-    self.location.text = [[locationData objectAtIndex:selected] objectForKey:@"location"];
-    
-    NSLog(@"%i, %i", lastUpdate, now);
-    
+    if (selected == 0) {
+        self.location.text = [[locationData objectAtIndex:selected] objectForKey:@"name"];
+    } else{
+        self.location.text = [[locationData objectAtIndex:selected] objectForKey:@"location"];
+    }
     if (lastUpdate+3600*10 < now) {
         [self getJSON:latitude :longitude];
     } else {

@@ -45,11 +45,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/ViewController.m"
-         timestampString = "389977973.674463"
+         timestampString = "390479191.182821"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "174"
-         endingLineNumber = "174"
+         startingLineNumber = "196"
+         endingLineNumber = "196"
          landmarkName = "-applicationDidBecomeActive:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -58,11 +58,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/ViewController.m"
-         timestampString = "390061353.321383"
+         timestampString = "390479226.32192"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "325"
-         endingLineNumber = "325"
+         startingLineNumber = "363"
+         endingLineNumber = "363"
          landmarkName = "-fetchedData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -84,12 +84,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "weather/ViewController.m"
-         timestampString = "390061632.054219"
+         timestampString = "390479226.32192"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "608"
-         endingLineNumber = "608"
-         landmarkName = "-locationChanged"
+         startingLineNumber = "653"
+         endingLineNumber = "653"
+         landmarkName = "-dayPressed:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

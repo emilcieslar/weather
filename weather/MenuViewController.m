@@ -138,7 +138,7 @@
     NSString *indexNumber = [NSString stringWithFormat:@"%i",indexPath.row];
     [defaults setObject:indexNumber forKey:@"selectedLocation"];
     
-    [self.slidingViewController resetTopView];
+    //[self.slidingViewController resetTopView];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"locationNotification" object: nil];
     
 }
